@@ -8,5 +8,6 @@ def return_driver_option():
     options.add_argument("--auto-open-devtools-for-tabs")
     return options
 
-test_host='https://emall.namektest.xyz'
-host='https://emallh5.namek.com.cn'
+
+test_host = 'https://emall.namektest.xyz'
+host = 'https://emallh5.namek.com.cn'

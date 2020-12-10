@@ -13,9 +13,9 @@ os.chdir(sys.path[0])
 def create_my_suit(flag):
     my_suit_smoke = unittest.TestSuite()
     my_suit = unittest.TestSuite()
-    testdir = "test_case"
+    test_dir = "test_case"
     discover = unittest.defaultTestLoader.discover(
-        testdir, pattern="product_case.py", top_level_dir=None)
+        test_dir, pattern="product_case.py", top_level_dir=None)
     for test_suit in discover:
         for test_cases in test_suit:
             my_suit.addTest(test_cases)
@@ -32,7 +32,7 @@ def create_my_suit(flag):
 
 
 if __name__ == '__main__':
-    mysuit = create_my_suit(0)
+    my_suit = create_my_suit(0)
     now1 = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
     filename = now1
     runner = HTMLReport.TestRunner(report_file_name=filename,
@@ -41,7 +41,7 @@ if __name__ == '__main__':
                                    description='emall测试环境的UI自动化结果',
                                    lang='cn'  # 支持中文与英文，默认中文
                                    )
-    runner.run(mysuit)
+    runner.run(my_suit)
     # 发送邮件
     # path='/Users/sy/PycharmProjects/emall/report/'+filename+'.html'
     # SMTL_upload.SendMail(path,filename)

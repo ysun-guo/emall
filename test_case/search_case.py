@@ -7,16 +7,17 @@ from pages.search_page import SearchPage
 from public.public import get_screen_in_case_end_or_error
 from selenium import webdriver
 import public.my_var
+
+
 @ddt
 class SearchTest(unittest.TestCase):
-    '''搜索测试'''
+    # '''搜索测试'''
 
     def setUp(self):
-        global token
-        options=public.my_var.return_driver_option()
-        self.driver=webdriver.Chrome(chrome_options=options)
+        options = public.my_var.return_driver_option()
+        self.driver = webdriver.Chrome(chrome_options=options)
         BasePage(self.driver).visit_url()
-        token=BasePage(self.driver).login_by_js(False)
+        token = BasePage(self.driver).login_by_js(False, '13175115726')
         self.driver.implicitly_wait(5)
 
     def tearDown(self):
@@ -33,6 +34,7 @@ class SearchTest(unittest.TestCase):
     def test_search_cancel(self):
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).cancel_search()
+
 
 if __name__ == '__main__':
     unittest.main()

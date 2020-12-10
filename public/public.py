@@ -1,24 +1,22 @@
-#coding=utf-8
+# coding=utf-8
 from HTMLReport import addImage
 
 
-
-#添加截图到报告中去
+# 添加截图到报告中去
 def get_screen_add_report(driver):
-    image=driver.get_screenshot_as_base64()
+    image = driver.get_screenshot_as_base64()
     addImage(image)
 
 
-#截图装饰器
+# 截图装饰器
 def get_screen_in_case_end_or_error(func):
-    def f1(obj,*args,**kwargs):
+    def f1(obj, *args, **kwargs):
         try:
-            func(obj,*args,**kwargs)
+            func(obj, *args, **kwargs)
             get_screen_add_report(obj.driver)
             # obj.driver.refresh()
-        except:
+        except BaseException:
             get_screen_add_report(obj.driver)
             # obj.driver.refresh()
             raise
     return f1
-

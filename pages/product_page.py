@@ -1,10 +1,7 @@
 # coding=utf-8
 
 from public.BasePage import BasePage
-from unittest import TestCase
-import logging
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from time import sleep
 
 
@@ -18,8 +15,8 @@ class ProductPage(BasePage):
     _product_detail = (By.CLASS_NAME, 'product-desc-detail')
     _product_item_value = (By.CLASS_NAME, 'detail-item-value')
     _product_car_num = (By.CLASS_NAME, 'cart-btn')
-    _home_button=(By.CLASS_NAME,'home-btn')
-    _cart_button=(By.CLASS_NAME,'cart-btn')
+    _home_button = (By.CLASS_NAME, 'home-btn')
+    _cart_button = (By.CLASS_NAME, 'cart-btn')
 
     # 点击规格信息，打开规格弹窗的信息
     _product_sku_add_to_car_button = (By.CLASS_NAME, 'sku-add-cart')
@@ -101,7 +98,7 @@ class ProductPage(BasePage):
         self.click_element(self._product_confirm_button)
 
     def get_car_num_value(self):
-        sleep(7)
+        sleep(10)
         str1 = self.get_element_value(self.get_product_car_num())
         car_num = 0
         print("完整的数据：" + str1)
