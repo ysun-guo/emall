@@ -41,7 +41,7 @@ if __name__ == '__main__':
     runner = HTMLReport.TestRunner(report_file_name=filename,
                                    output_path='report',
                                    title='测试报告',
-                                   description='emall测试环境的UI自动化结果',
+                                   description='电商测试环境的UI自动化结果',
                                    sequential_execution=True
                                    )
     runner.run(my_suit)

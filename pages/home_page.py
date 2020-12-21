@@ -48,7 +48,7 @@ class HomePage(BasePage):
     '''业务层'''
     # 验证橱窗是否展示
 
-    def check_shopwindow_show(self):
+    def check_shop_window_show(self):
         self.assert_true(
             ec.visibility_of_element_located(
                 self.get_shop_window()))

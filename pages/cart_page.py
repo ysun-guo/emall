@@ -10,13 +10,12 @@ import requests
 from public.readConf import ReadConf
 
 
+
 class CartPage(BasePage):
     # 底下导航栏的购物车按钮
     _cart_bar = (By.XPATH, '//div[@class="uni-tabbar__item"][3]')
     # 购物车共X件宝贝
-    _cart_total_num = (
-        By.XPATH,
-        '//uni-view[@class="cart-count"]/uni-text/span')
+    _cart_total_num = (By.XPATH,'//uni-view[@class="cart-count"]/uni-text/span')
     # 批量操作的编辑/完成按钮
     _cart_edit_btn = (By.CLASS_NAME, 'cart-edit')
     # 批量操作的删除按钮
@@ -59,17 +58,14 @@ class CartPage(BasePage):
     '''元素定位层'''
 
     # 批量编辑/完成按钮
-
     def get_cart_edit_btn(self):
         return self.find_element(self._cart_edit_btn)
 
     # 批量编辑的删除按钮
-
     def get_cart_edit_delete_btn(self):
         return self.find_element(self._cart_edit_delete_btn)
 
     # 购物车共x件宝贝的text
-
     def get_cart_total_num_text(self):
         return self.find_element(self._cart_total_num)
 
@@ -94,14 +90,13 @@ class CartPage(BasePage):
         self.click_element(self._cart_bar)
 
     # 获取购物车商品总数
-
     def get_cart_total_num(self):
         return self.get_element_value(self.get_cart_total_num_text())
 
     # 点击编辑/完成按钮
     def click_cart_edit_btn(self):
         self.click_element(self._cart_edit_btn)
-
+    # 点击全选按钮
     def click_select_all_btn(self):
         self.click_element(self._select_all_btn)
 
@@ -114,7 +109,6 @@ class CartPage(BasePage):
         self.click_element(self._product_num_add)
 
     # 点击商品数量-
-
     def click_product_num_del(self):
         self.click_element(self._product_num_del)
 
@@ -123,11 +117,10 @@ class CartPage(BasePage):
         self.sendkey_element(self.get_product_num_input_box(), num)
 
     # 获取商品数量
-
     def get_product_num_text(self):
         return self.get_element_value(self.get_product_num_input_box())
-    # 获取商品名称
 
+    # 获取商品名称
     def get_product_name_list(self):
         return self.get_element_value(self.get_product_name())
 
@@ -147,9 +140,7 @@ class CartApi(object):
     @staticmethod
     def get_cart_list_api(token):
         # 获取用户的购物车列表id，name，num
-        api = '/api/v1/shopping/cart/list'
-        host = ReadConf().readconf("URL")
-        url = host + api
+        url = 'http://47.97.206.135:8815/api/v1/shopping/cart/list'
         header = {
             "token": token,
             "tenantId": "100108"
@@ -171,16 +162,15 @@ class CartApi(object):
 
     @staticmethod
     def get_cart_total_num_api(token):
-        api = '/api/v1/shopping/cart/num'
-        host = ReadConf().readconf("Host")
-        url = host + api
+        url = 'http://47.97.206.135:8815/api/v1/shopping/cart/num'
         header = {
             "token": token,
             "tenantId": "100108"
         }
-        req = requests.get(url, header=header)
+        logging.info(token)
+        req = requests.get(url, headers=header)
         text = req.json()
-        logging.info("api返回的数量：" + text["body"])
+        logging.info(text)
         return text["body"]
 
 
@@ -199,7 +189,7 @@ class CartCheck(CartPage, CartApi):
     def check_cart_total_num(self, token):
         page_total_num = self.get_cart_total_num()
         api_total_num = CartApi.get_cart_total_num_api(token)
-        self.assert_equal(page_total_num, api_total_num)
+        self.assert_equal(int(page_total_num), api_total_num)
 
     def check_cart_product_info(self, token):
         page_product_name_list = self.get_product_name_list()
@@ -229,8 +219,7 @@ class CartCheck(CartPage, CartApi):
         self.check_exist_in_page("花更少，买更好")
 
     def check_create_order(self):
-        self.click_product_select_icon()
-        self.click_create_order_btn()
+
         self.check_exist_in_page("配送方式")
 
     def check_product_add_num(self):

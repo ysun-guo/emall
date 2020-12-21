@@ -6,6 +6,7 @@ from unittest import TestCase
 from selenium.webdriver.chrome.options import Options
 from operate_api import ReturnToken
 from readConf import ReadConf
+import logging
 
 
 class BasePage:
@@ -32,9 +33,9 @@ class BasePage:
     # 打开网址
     def visit_url(self, url=None):
         if url is None:
-            url = 'https://emall.namektest.xyz/emall/?tenant=zjsyjt'
+            url = ReadConf().readconf("URL","homeURL")
         else:
-            url = ReadConf().readconf("URL")
+            url = url
         self.driver.get(url)
 
     # 设置手机模式
@@ -46,6 +47,7 @@ class BasePage:
         return options
 
     def login_by_js(self, is_member, phone):
+        print(is_member)
         if is_member:
             member_list = ReturnToken.return_member_info(phone)
             member_id = member_list[0]
@@ -66,6 +68,7 @@ class BasePage:
                 "window.localStorage.setItem('namek_emall@zjsyjt@token',JSON.stringify('" +
                 token +
                 "'))")
+        logging.info(token)
         return token
     # 切换iframe
 

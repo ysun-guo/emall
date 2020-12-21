@@ -9,18 +9,16 @@ from pages.product_page import ProductPage
 from public.public import get_screen_in_case_end_or_error
 
 
-@ddt
 class ProductTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
 
-        options = BasePage().device_dev_set()
+        options = BasePage(cls).device_dev_set()
         cls.driver = webdriver.Chrome(chrome_options=options)
         cls.driver.implicitly_wait(5)
         BasePage(cls.driver).visit_url()
-        token = BasePage(cls.driver).login_by_js(True, '13175115726')
-        return token
+        BasePage(cls.driver).login_by_js(True, '13175115726')
 
     @classmethod
     def tearDownClass(cls):
@@ -53,8 +51,7 @@ class ProductTest(unittest.TestCase):
         before = ProductPage(self.driver).get_car_num_value()
         ProductPage(self.driver).product_sku_add_to_car(value)
         after = ProductPage(self.driver).get_car_num_value()
-        ProductPage(
-            self.driver).check_add_to_car(
+        ProductPage(self.driver).check_add_to_car(
             before=before,
             value=value,
             after=after)
@@ -85,6 +82,7 @@ class ProductTest(unittest.TestCase):
         SearchPage(self.driver).click_search_product_01()
         ProductPage(self.driver).click_home_button()
         ProductPage(self.driver).check_return_home()
+
 
     @get_screen_in_case_end_or_error
     def test_go_to_cart(self):

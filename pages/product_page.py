@@ -117,6 +117,7 @@ class ProductPage(BasePage):
 
     def click_cart_button(self):
         self.click_element(self._cart_button)
+        sleep(2)
 
     '''业务层'''
 
