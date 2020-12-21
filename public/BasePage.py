@@ -1,10 +1,12 @@
 # encoding=utf-8
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from unittest import TestCase
 from selenium.webdriver.chrome.options import Options
 from operate_api import ReturnToken
+from readConf import ReadConf
+import logging
 
 
 class BasePage:
@@ -16,7 +18,7 @@ class BasePage:
         try:
             return WebDriverWait(
                 self.driver, 10, 0.5).until(
-                EC.visibility_of_element_located(
+                ec.visibility_of_element_located(
                     *loc))
         except Exception as e:
             raise e
@@ -24,31 +26,32 @@ class BasePage:
     def find_elements(self, *loc):
         try:
             return WebDriverWait(self.driver, 10, 0.5).until(
-                EC.visibility_of_any_elements_located(*loc))
+                ec.visibility_of_any_elements_located(*loc))
         except Exception as e:
             raise e
 
     # 打开网址
     def visit_url(self, url=None):
         if url is None:
-            url = 'https://emall.namektest.xyz/emall/?tenant=zjsyjt'
+            url = ReadConf().readconf("URL","homeURL")
         else:
             url = url
         self.driver.get(url)
-    # 设置手机模式
 
+    # 设置手机模式
     def device_dev_set(self):
         mobile_emulation = {"deviceName": "iPhone 8"}
         options = Options()
         options.add_experimental_option("mobileEmulation", mobile_emulation)
         options.add_argument("--auto-open-devtools-for-tabs")
-        self.driver.Chrome(chrome_options=options)
+        return options
 
     def login_by_js(self, is_member, phone):
+        print(is_member)
         if is_member:
-            list = ReturnToken.return_member_info(phone)
-            member_id = list[0]
-            token = list[1]
+            member_list = ReturnToken.return_member_info(phone)
+            member_id = member_list[0]
+            token = member_list[1]
             self.driver.execute_script(
                 "window.localStorage.setItem('namek_emall@zjsyjt@token',JSON.stringify('" +
                 token +
@@ -60,11 +63,12 @@ class BasePage:
                 phone +
                 "'}))")
         else:
-            token = ReturnToken.return_visit_token()
+            token = ReturnToken().return_visit_token()
             self.driver.execute_script(
                 "window.localStorage.setItem('namek_emall@zjsyjt@token',JSON.stringify('" +
                 token +
                 "'))")
+        logging.info(token)
         return token
     # 切换iframe
 
@@ -80,7 +84,7 @@ class BasePage:
     def click_element(self, *loc):
         element = WebDriverWait(
             self.driver, 10, 0.5).until(
-            EC.element_to_be_clickable(
+            ec.element_to_be_clickable(
                 *loc))
         element.click()
 
@@ -97,31 +101,30 @@ class BasePage:
         element.clear()
 
     # 获取某个元素的属性
-
     def get_element_attribute(self, element, attribute):
         return element.get_attribute(attribute)
 
     '''断言封装'''
 
     # 校验是否为真
-    def assert_True(self, key):
+    def assert_true(self, key):
         TestCase().assertTrue(key)
 
     # 校验是否为假
-    def assert_False(self, key):
+    def assert_false(self, key):
         TestCase().assertFalse(key)
 
     # 校验是否相等
-    def assert_Equal(self, key1, key2):
+    def assert_equal(self, key1, key2):
         TestCase().assertEqual(key1, key2)
 
     # 校验是否不相等
-    def assert_Not_Equal(self, key1, key2):
+    def assert_not_equal(self, key1, key2):
         TestCase().assertNotEqual(key1, key2)
 
     # 校验页面是否存在某字符串
-    def check_exist_in_page(self, str):
-        self.assert_True(str in self.driver.page_source)
+    def check_exist_in_page(self, text):
+        self.assert_true(text in self.driver.page_source)
 
     def check_exist_in_string(self, str1, str2):
-        self.assert_True(str1 in str2)
+        self.assert_true(str1 in str2)

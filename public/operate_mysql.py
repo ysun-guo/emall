@@ -33,6 +33,6 @@ class OperateMysql:
             self.cursor.execute(sql)
             # 提交修改
             self._db.commit()
-        except:
+        except BaseException:
             # 发生错误时回滚
             self._db.rollback()

@@ -1,10 +1,7 @@
 # coding=utf-8
 
 from public.BasePage import BasePage
-from unittest import TestCase
-import logging
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from time import sleep
 
 
@@ -18,8 +15,8 @@ class ProductPage(BasePage):
     _product_detail = (By.CLASS_NAME, 'product-desc-detail')
     _product_item_value = (By.CLASS_NAME, 'detail-item-value')
     _product_car_num = (By.CLASS_NAME, 'cart-btn')
-    _home_button=(By.CLASS_NAME,'home-btn')
-    _cart_button=(By.CLASS_NAME,'cart-btn')
+    _home_button = (By.CLASS_NAME, 'home-btn')
+    _cart_button = (By.CLASS_NAME, 'cart-btn')
 
     # 点击规格信息，打开规格弹窗的信息
     _product_sku_add_to_car_button = (By.CLASS_NAME, 'sku-add-cart')
@@ -79,7 +76,8 @@ class ProductPage(BasePage):
 
     # 点击打开规格弹窗
     def click_product_item_value(self):
-        self.driver.execute_script("window.scrollBy(0,500)")
+        self.driver.execute_script("window.scrollBy(0,1000)")
+        print("已滑动")
         self.click_element(self._product_item_value)
 
     # 点击加购物车按钮
@@ -101,7 +99,7 @@ class ProductPage(BasePage):
         self.click_element(self._product_confirm_button)
 
     def get_car_num_value(self):
-        sleep(7)
+        sleep(10)
         str1 = self.get_element_value(self.get_product_car_num())
         car_num = 0
         print("完整的数据：" + str1)
@@ -115,10 +113,11 @@ class ProductPage(BasePage):
         self.sendkey_element(self.get_product_sku_input_box(), value)
 
     def click_home_button(self):
-        self.click_element(self.get_home_button())
+        self.click_element(self._home_button)
 
     def click_cart_button(self):
-        self.click_element(self.get_cart_button())
+        self.click_element(self._cart_button)
+        sleep(2)
 
     '''业务层'''
 
@@ -145,7 +144,7 @@ class ProductPage(BasePage):
     def check_add_to_car(self, before, value, after):
         print(before, value, after)
         after_expected = int(before) + int(value)
-        self.assert_Equal(int(after), after_expected)
+        self.assert_equal(int(after), after_expected)
 
     def check_buy(self):
         self.check_exist_in_page('提交订单')
