@@ -1,6 +1,5 @@
 import requests
-
-import my_var
+from readConf import ReadConf
 
 url = 'https://emall.namektest.xyz/api/v1/login/loginByPhone'
 body = {
@@ -15,7 +14,7 @@ print(req1.cookies)
 
 
 api = '/api/v1/shopping/cart/list'
-host = my_var.test_host
+host = ReadConf().readconf("Host")
 url = host + api
 header = {
     "token": token,

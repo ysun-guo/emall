@@ -5,21 +5,24 @@ from ddt import *
 from public.BasePage import BasePage
 from pages.home_page import HomePage
 from public.public import get_screen_in_case_end_or_error
-import public.my_var
 
 
 @ddt
 class HomeTest(unittest.TestCase):
     # 搜索测试
+    @classmethod
+    def setUpClass(cls):
+        options = BasePage().device_dev_set()
+        cls.driver = webdriver.Chrome(chrome_options=options)
+        cls.driver.implicitly_wait(5)
+        BasePage(cls.driver).visit_url()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.quit()
 
     def setUp(self):
-        options = public.my_var.return_driver_option()
-        self.driver = webdriver.Chrome(chrome_options=options)
-        self.driver.implicitly_wait(5)
-        BasePage(self.driver).visit_url(False)
-
-    def tearDown(self):
-        self.driver.quit()
+        BasePage(self.driver).visit_url()
 
     @get_screen_in_case_end_or_error
     def test_home_check(self):

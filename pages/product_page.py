@@ -76,7 +76,8 @@ class ProductPage(BasePage):
 
     # 点击打开规格弹窗
     def click_product_item_value(self):
-        self.driver.execute_script("window.scrollBy(0,500)")
+        self.driver.execute_script("window.scrollBy(0,1000)")
+        print("已滑动")
         self.click_element(self._product_item_value)
 
     # 点击加购物车按钮
@@ -112,10 +113,10 @@ class ProductPage(BasePage):
         self.sendkey_element(self.get_product_sku_input_box(), value)
 
     def click_home_button(self):
-        self.click_element(self.get_home_button())
+        self.click_element(self._home_button)
 
     def click_cart_button(self):
-        self.click_element(self.get_cart_button())
+        self.click_element(self._cart_button)
 
     '''业务层'''
 
@@ -142,7 +143,7 @@ class ProductPage(BasePage):
     def check_add_to_car(self, before, value, after):
         print(before, value, after)
         after_expected = int(before) + int(value)
-        self.assert_Equal(int(after), after_expected)
+        self.assert_equal(int(after), after_expected)
 
     def check_buy(self):
         self.check_exist_in_page('提交订单')

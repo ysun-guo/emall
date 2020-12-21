@@ -30,7 +30,3 @@ class OperaJson:
         except KeyError:
             print("保存json数据出错")
             raise
-
-
-if __name__ == '__main__':
-    OperaJson("dbname").get_json_data('test')

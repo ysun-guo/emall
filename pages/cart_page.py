@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 import requests
-import public.my_var
+from public.readConf import ReadConf
 
 
 class CartPage(BasePage):
@@ -148,7 +148,7 @@ class CartApi(object):
     def get_cart_list_api(token):
         # 获取用户的购物车列表id，name，num
         api = '/api/v1/shopping/cart/list'
-        host = public.my_var.test_host
+        host = ReadConf().readconf("URL")
         url = host + api
         header = {
             "token": token,
@@ -172,7 +172,7 @@ class CartApi(object):
     @staticmethod
     def get_cart_total_num_api(token):
         api = '/api/v1/shopping/cart/num'
-        host = public.my_var.test_host
+        host = ReadConf().readconf("Host")
         url = host + api
         header = {
             "token": token,
@@ -199,7 +199,7 @@ class CartCheck(CartPage, CartApi):
     def check_cart_total_num(self, token):
         page_total_num = self.get_cart_total_num()
         api_total_num = CartApi.get_cart_total_num_api(token)
-        self.assert_Equal(page_total_num, api_total_num)
+        self.assert_equal(page_total_num, api_total_num)
 
     def check_cart_product_info(self, token):
         page_product_name_list = self.get_product_name_list()
@@ -238,9 +238,9 @@ class CartCheck(CartPage, CartApi):
         self.click_product_num_add()
         add_after = self.get_product_num_text()
         add_after_expected = int(add_before) + 1
-        self.assert_Equal(add_after, add_after_expected)
+        self.assert_equal(add_after, add_after_expected)
         del_before = self.get_product_num_text()
         self.click_product_num_del()
         del_after = self.get_product_num_text()
         del_after_expected = int(del_before) - 1
-        self.assert_Equal(del_after, del_after_expected)
+        self.assert_equal(del_after, del_after_expected)

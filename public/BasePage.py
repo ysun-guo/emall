@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from unittest import TestCase
 from selenium.webdriver.chrome.options import Options
 from operate_api import ReturnToken
+from readConf import ReadConf
 
 
 class BasePage:
@@ -33,16 +34,16 @@ class BasePage:
         if url is None:
             url = 'https://emall.namektest.xyz/emall/?tenant=zjsyjt'
         else:
-            url = url
+            url = ReadConf().readconf("URL")
         self.driver.get(url)
-    # 设置手机模式
 
+    # 设置手机模式
     def device_dev_set(self):
         mobile_emulation = {"deviceName": "iPhone 8"}
         options = Options()
         options.add_experimental_option("mobileEmulation", mobile_emulation)
         options.add_argument("--auto-open-devtools-for-tabs")
-        self.driver.Chrome(chrome_options=options)
+        return options
 
     def login_by_js(self, is_member, phone):
         if is_member:
@@ -85,50 +86,42 @@ class BasePage:
         element.click()
 
     # 元素输入
-    @staticmethod
-    def sendkey_element(element, *values):
+    def sendkey_element(self, element, *values):
         element.send_keys(*values)
 
     # 获取元素的值
-    @staticmethod
-    def get_element_value(element):
+    def get_element_value(self, element):
         return element.text
 
     # 清空元素
-    @staticmethod
-    def clear_element(element):
+    def clear_element(self, element):
         element.clear()
 
     # 获取某个元素的属性
-    @staticmethod
-    def get_element_attribute(element, attribute):
+    def get_element_attribute(self, element, attribute):
         return element.get_attribute(attribute)
 
     '''断言封装'''
 
     # 校验是否为真
-    @staticmethod
-    def assert_True(key):
+    def assert_true(self, key):
         TestCase().assertTrue(key)
 
     # 校验是否为假
-    @staticmethod
-    def assert_False(key):
+    def assert_false(self, key):
         TestCase().assertFalse(key)
 
     # 校验是否相等
-    @staticmethod
-    def assert_Equal(key1, key2):
+    def assert_equal(self, key1, key2):
         TestCase().assertEqual(key1, key2)
 
     # 校验是否不相等
-    @staticmethod
-    def assert_Not_Equal(key1, key2):
+    def assert_not_equal(self, key1, key2):
         TestCase().assertNotEqual(key1, key2)
 
     # 校验页面是否存在某字符串
     def check_exist_in_page(self, text):
-        self.assert_True(text in self.driver.page_source)
+        self.assert_true(text in self.driver.page_source)
 
     def check_exist_in_string(self, str1, str2):
-        self.assert_True(str1 in str2)
+        self.assert_true(str1 in str2)
