@@ -10,7 +10,6 @@ import requests
 from public.readConf import ReadConf
 
 
-
 class CartPage(BasePage):
     # 底下导航栏的购物车按钮
     _cart_bar = (By.XPATH, '//div[@class="uni-tabbar__item"][3]')
@@ -21,18 +20,18 @@ class CartPage(BasePage):
     # 批量操作的删除按钮
     _cart_edit_delete_btn = (By.CLASS_NAME, 'complate-btn')
     # 数量-按钮
-    _product_num_del = (By.XPATH, 'uni-view[@class="product-del"][1]')
+    _product_num_del = (By.XPATH, '//uni-view[@class="product-del"][1]')
     # 数量+按钮
-    _product_num_add = (By.XPATH, 'uni-view[@class="product-add"][1]')
+    _product_num_add = (By.XPATH, '//uni-view[@class="product-add"][1]')
     # 数量输入框
-    _product_num_input = (By.XPATH, 'input[@class="uni-input-input"][1]')
+    _product_num_input = (By.XPATH, '//input[@class="uni-input-input"][1]')
     # 多规格商品的规格按钮
     _product_sku_choose_btn = (
         By.XPATH,
-        'uni-view[@class="product-sku-select-down flex-center overflow-ellipsis-1"][1]')
+        '//uni-view[@class="product-sku-select-down flex-center overflow-ellipsis-1"][1]')
     # sku的选择弹窗
     _product_sku_choose_box = (
-        By.XPATH, 'uni-view[@class="product-sku-select-inner"]')
+        By.XPATH, '//uni-view[@class="product-sku-select-inner"]')
     # 结算按钮
     _create_order_btn = (By.CLASS_NAME, 'create-order-btn')
     # 合计金额
@@ -44,7 +43,8 @@ class CartPage(BasePage):
     # 去逛逛按钮
     _goto_anywhere_btn = (By.CLASS_NAME, 'look-otherwhere')
     # 商品名称
-    _product_name = (By.CLASS_NAME, 'pruduct-name overflow-ellipsis-1')
+    # _product_name = (By.CLASS_NAME, 'pruduct-name overflow-ellipsis-1')
+    _product_name = (By.XPATH,'//uni-view[@class="pruduct-name overflow-ellipsis-1"][1]')
     # 删除弹窗的确定按钮
     _del_popup_sure_btn = (
         By.CLASS_NAME,
@@ -71,13 +71,14 @@ class CartPage(BasePage):
 
     # 商品数量输入框
     def get_product_num_input_box(self):
-        return self.find_element(self._product_num_input)
+        return self.find_elements(self._product_num_input)
 
     def get_toast_text(self):
         return self.find_element(self._toast_text)
 
     def get_product_name(self):
-        return self.find_element(self._product_name)
+        sleep(1)
+        return self.find_elements(self._product_name)
 
     '''元素操作层'''
 
@@ -118,11 +119,17 @@ class CartPage(BasePage):
 
     # 获取商品数量
     def get_product_num_text(self):
-        return self.get_element_value(self.get_product_num_input_box())
+        results=[]
+        for product_num in self.get_product_num_input_box():
+            results.append(self.get_element_value(product_num))
+        return results
 
     # 获取商品名称
     def get_product_name_list(self):
-        return self.get_element_value(self.get_product_name())
+        resluts = []
+        for product_name in self.get_product_name():
+            resluts.append(self.get_element_value(product_name))
+        return resluts
 
     def click_del_popup_sure_btn(self):
         self.click_element(self._del_popup_sure_btn)
@@ -193,11 +200,18 @@ class CartCheck(CartPage, CartApi):
 
     def check_cart_product_info(self, token):
         page_product_name_list = self.get_product_name_list()
+        print(page_product_name_list)
         page_product_num_list = self.get_product_num_text()
+        print(page_product_num_list)
         page_product_info = [page_product_name_list, page_product_num_list]
         api_product_info_list = CartApi.get_cart_list_api(token)
-        api_product_info = api_product_info_list[1:]
-        TestCase().assertListEqual(page_product_info, api_product_info)
+        print(api_product_info_list)
+        # ************************有问题
+        api_product_info=[]
+        for api_product_infos in api_product_info_list:
+            api_product_info.append(api_product_infos[1:])
+            print(api_product_info)
+        # TestCase().assertListEqual(page_product_info, api_product_info)
 
     def check_cart_product_del(self, token):
         self.click_cart_edit_btn()
