@@ -2,15 +2,14 @@
 from readConf import ReadConf
 import logging
 import requests
+import execjs
+from readConf import ReadConf
 
-api = '/api/v1/shopping/cart/num'
 host = ReadConf().readconf("HOST", "host")
-url = "http://47.97.206.135:8815/api/v1/shopping/cart/num"
+api = '/api/v1/login/loginByPhone'
+url = host + api
 
-header = {
-    "token": "lRFBXp5GF9fhRgmWfg3xwUH87NMj0XyB",
-    "tenantId": "100108"
-}
-req = requests.get(url, headers=header)
-text = req.json()
-print(text["body"])
+print(url)
+
+
+

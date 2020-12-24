@@ -31,8 +31,10 @@ class ProductPage(BasePage):
     '''元素定位层'''
 
     # 商品详情页的按钮
-    def get_product_title(self):
+    def find_product_title(self):
         return self.find_element(self._product_title)
+    def get_product_name(self):
+        return self.get_element_value(self.find_product_title())
 
     def get_product_price(self):
         return self.find_element(self._product_price)

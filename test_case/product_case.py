@@ -18,7 +18,7 @@ class ProductTest(unittest.TestCase):
         cls.driver = webdriver.Chrome(chrome_options=options)
         cls.driver.implicitly_wait(5)
         BasePage(cls.driver).visit_url()
-        BasePage(cls.driver).login_by_js(True, '13175115726')
+        BasePage(cls.driver).login_by_js(True)
 
     @classmethod
     def tearDownClass(cls):
