@@ -1,21 +1,28 @@
 import requests
+from readConf import ReadConf
 
 
 class ReturnToken():
-    @staticmethod
-    def return_visit_token():
-        url = 'https://emall.namektest.xyz/api/v1/login/loginByAnonymous'
-        data = {'tenantID': '100108', 'belongTenantId': '100108'}  # 请求数据
+
+    def return_visit_token(self):
+        tenantid = ReadConf().readconf("TenantID", "tenantid")
+        host=ReadConf().readconf("HOST","host")
+        api='/api/v1/login/loginByAnonymous'
+        url = host+api
+        data = {'tenantID': tenantid, 'belongTenantId': tenantid}  # 请求数据
         req = requests.post(url, data)  # 发post请求
         text = req.json()  # 返回string,json串
         return text['body']['token']
 
-    @staticmethod
-    def return_member_info(phone="13175115726"):
-        url = 'https://emall.namektest.xyz/api/v1/login/loginByPhone'
+    def return_member_info(self):
+        phone=ReadConf().readconf("PhoneNumber","phone")
+        tenantid = ReadConf().readconf("TenantID", "tenantid")
+        host=ReadConf().readconf("HOST","host")
+        api='/api/v1/login/loginByPhone'
+        url = host+api
         body = {
             "phone": phone,
-            "tenantId": 100108
+            "tenantId": tenantid
         }
         req = requests.post(url, json=body)
         text = req.json()

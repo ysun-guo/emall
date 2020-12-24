@@ -16,7 +16,7 @@ class SearchTest(unittest.TestCase):
         options = BasePage(cls).device_dev_set()
         cls.driver = webdriver.Chrome(chrome_options=options)
         BasePage(cls.driver).visit_url()
-        BasePage(cls.driver).login_by_js(False, '13175115726')
+        BasePage(cls.driver).login_by_js(False)
         cls.driver.implicitly_wait(5)
 
     @classmethod

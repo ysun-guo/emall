@@ -12,6 +12,7 @@ import logging
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
+        host = ReadConf().readconf("HOST", "host")
 
     # 封装定位方式
     def find_element(self, *loc):
@@ -37,7 +38,6 @@ class BasePage:
         else:
             url = url
         self.driver.get(url)
-
     # 设置手机模式
     def device_dev_set(self):
         mobile_emulation = {"deviceName": "iPhone 8"}
@@ -46,10 +46,10 @@ class BasePage:
         options.add_argument("--auto-open-devtools-for-tabs")
         return options
 
-    def login_by_js(self, is_member, phone):
-        print(is_member)
+    def login_by_js(self, is_member):
+        phone = ReadConf().readconf("PhoneNumber","phone")
         if is_member:
-            member_list = ReturnToken.return_member_info(phone)
+            member_list = ReturnToken().return_member_info()
             member_id = member_list[0]
             token = member_list[1]
             self.driver.execute_script(
@@ -68,7 +68,6 @@ class BasePage:
                 "window.localStorage.setItem('namek_emall@zjsyjt@token',JSON.stringify('" +
                 token +
                 "'))")
-        logging.info(token)
         return token
     # 切换iframe
 
