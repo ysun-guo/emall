@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from public.BasePage import BasePage
+from BasePage import BasePage
 from selenium.webdriver.common.by import By
 from time import sleep
 
@@ -33,6 +33,7 @@ class ProductPage(BasePage):
     # 商品详情页的按钮
     def find_product_title(self):
         return self.find_element(self._product_title)
+
     def get_product_name(self):
         return self.get_element_value(self.find_product_title())
 

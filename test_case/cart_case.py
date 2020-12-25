@@ -29,10 +29,10 @@ class CartTest(unittest.TestCase):
         BasePage(self.driver).visit_url(ReadConf().readconf("URL","cartURL"))
 
     # 已完成
-    @get_screen_in_case_end_or_error
-    def test_page_show(self):
-        CartCheck(self.driver).check_cart_total_num(self.token)
-        CartCheck(self.driver).check_cart_product_info(self.token)
+    # @get_screen_in_case_end_or_error
+    # def test_page_show(self):
+    #     CartCheck(self.driver).check_cart_total_num(self.token)
+    #     CartCheck(self.driver).check_cart_product_info(self.token)
 
     # def test_modify_num(self):
     #     pass
@@ -44,19 +44,25 @@ class CartTest(unittest.TestCase):
     #     pass
     #
     # 已完成
-    @get_screen_in_case_end_or_error
-    def test_product_detail(self):
-        CartCheck(self.driver).check_goto_product_detail()
+    # @get_screen_in_case_end_or_error
+    # def test_product_detail(self):
+    #     CartCheck(self.driver).check_goto_product_detail()
     #
     # def test_switch_sku(self):
     #     pass
 
     # 已完成
-    def test_create_order(self):
-        CartPage(self.driver).click_product_select_icon()
-        CartPage(self.driver).click_create_order_btn()
-        sleep(3)
-        CartCheck(self.driver).check_create_order()
+    # def test_create_order(self):
+    #     expected = None
+    #     CartPage(self.driver).click_product_select_icon()
+    #     CartPage(self.driver).click_create_order_btn(expected)
+    #     sleep(3)
+    #     CartCheck(self.driver).check_create_order()
+
+    # 已完成
+    # def test_create_order_no_product(self):
+    #     expected="请选择需要结算的商品"
+    #     CartPage(self.driver).click_create_order_btn(expected)
 
 
 if __name__ == "__main__":

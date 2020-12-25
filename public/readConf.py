@@ -14,5 +14,5 @@ class ReadConf():
 
 if __name__ == '__main__':
     test = ReadConf()
-    t = test.readconf('URL',"homeURL")  # 传入sections的值
+    t = test.readconf('URL', "homeURL")  # 传入sections的值
     print(t)
