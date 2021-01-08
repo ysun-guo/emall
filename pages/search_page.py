@@ -37,7 +37,7 @@ class SearchPage(BasePage):
     '''元素操作层'''
 
     # 输入搜索关键字
-    def send_key_search_box(self, value='限购测试'):
+    def send_key_search_box(self, value='测试'):
         self.sendkey_element(self.get_search_box(), value)
         self.sendkey_element(self.get_search_box(), Keys.RETURN)
 
@@ -55,20 +55,3 @@ class SearchPage(BasePage):
         for product_name in self.get_product_names():
             results.append(self.get_element_value(product_name))
         return results
-
-    '''业务层'''
-
-    # 校验搜索是否符合预期
-    def check_search_have_product(self, value):
-        self.send_key_search_box(value)
-        sleep(2)
-        for productName in self.get_product_names():
-            name = self.get_element_value(productName)
-            logging.info("商品名称:" + name)
-            self.check_exist_in_string(value, name)
-
-    # 封装取消搜索流程
-    def cancel_search(self):
-        self.click_cancel_button()
-        sleep(2)
-        self.check_exist_in_page('砍价')

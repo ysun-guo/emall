@@ -1,13 +1,13 @@
 # coding=utf-8
 
-from public.BasePage import BasePage
+from BasePage import BasePage
 from unittest import TestCase
 import logging
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
-from selenium.webdriver.support.ui import WebDriverWait
+from public.public import check_page
 import requests
-from public.readConf import ReadConf
+from readConf import ReadConf
 from product_page import ProductPage
 from time import sleep
 
@@ -16,7 +16,9 @@ class CartPage(BasePage):
     # 底下导航栏的购物车按钮
     _cart_bar = (By.XPATH, '//div[@class="uni-tabbar__item"][3]')
     # 购物车共X件宝贝
-    _cart_total_num = (By.XPATH,'//uni-view[@class="cart-count"]/uni-text/span')
+    _cart_total_num = (
+        By.XPATH,
+        '//uni-view[@class="cart-count"]/uni-text/span')
     # 批量操作的编辑/完成按钮
     _cart_edit_btn = (By.CLASS_NAME, 'cart-edit')
     # 批量操作的删除按钮
@@ -40,12 +42,12 @@ class CartPage(BasePage):
     _count_money = (By.XPATH, '//uni-view[@class="count-money"]/uni-text/span')
     # 全选按钮
     _select_all_btn = (By.CLASS_NAME, 'select-all-btn')
-    # toast提示
-    _toast_text = (By.XPATH, '//*[@text="请选择需要结算的商品"]')
     # 去逛逛按钮
     _goto_anywhere_btn = (By.CLASS_NAME, 'look-otherwhere')
     # 商品名称
-    _product_name = (By.XPATH,'//uni-view[@class="pruduct-name overflow-ellipsis-1"]')
+    _product_name = (
+        By.XPATH,
+        '//uni-view[@class="pruduct-name overflow-ellipsis-1"]')
     # 删除弹窗的确定按钮
     _del_popup_sure_btn = (
         By.CLASS_NAME,
@@ -74,19 +76,16 @@ class CartPage(BasePage):
     def get_product_num_input_box(self):
         return self.find_elements(self._product_num_input)
 
-    def get_toast_text(self):
-        return self.find_element(self._toast_text)
-
     def get_product_names(self):
         sleep(1)
         return self.find_elements(self._product_name)
 
     # 获取商品名称
     def get_product_name_list(self):
-        resluts = []
+        results = []
         for product_name in self.get_product_names():
-            resluts.append(self.get_element_value(product_name))
-        return resluts
+            results.append(self.get_element_value(product_name))
+        return results
 
     # 获取购物车商品总数
     def get_cart_total_num(self):
@@ -94,13 +93,14 @@ class CartPage(BasePage):
 
     # 获取商品数量
     def get_product_num_text(self):
-        results=[]
+        results = []
         for product_num in self.get_product_num_input_box():
-            results.append(self.get_element_attribute(product_num,"value"))
+            results.append(self.get_element_attribute(product_num, "value"))
         return results
 
     '''元素操作层'''
     # 点击第一个商品名称
+
     def click_product_name_01(self):
         self.click_element(self._product_name)
 
@@ -116,6 +116,7 @@ class CartPage(BasePage):
     def click_cart_edit_btn(self):
         self.click_element(self._cart_edit_btn)
     # 点击全选按钮
+
     def click_select_all_btn(self):
         self.click_element(self._select_all_btn)
 
@@ -140,6 +141,7 @@ class CartPage(BasePage):
 
     def click_product_select_icon(self):
         self.click_element(self._product_select_icon)
+    # 点击结算按钮
 
     def click_create_order_btn(self):
         self.click_element(self._create_order_btn)
@@ -151,13 +153,13 @@ class CartApi(BasePage):
     @staticmethod
     def get_cart_list_api(token):
         # 获取用户的购物车列表id，name，num
-        tenantid=ReadConf().readconf("TenantID","tenantid")
-        host=ReadConf().readconf("HOST","host")
-        api='/api/v1/shopping/cart/list'
-        url = host+api
+        tenant_id = ReadConf().readconf("TenantID", "tenant_id")
+        host = ReadConf().readconf("HOST", "host")
+        api = '/api/v1/shopping/cart/list'
+        url = host + api
         header = {
             "token": token,
-            "tenantId": tenantid
+            "tenantId": tenant_id
         }
         req = requests.get(url, headers=header)
         text = req.json()
@@ -176,16 +178,13 @@ class CartApi(BasePage):
 
     @staticmethod
     def get_cart_total_num_api(token):
-        tenantid=ReadConf().readconf("TenantID","tenantid")
-        host=ReadConf().readconf("HOST","host")
-        api='/api/v1/shopping/cart/num'
-        url = host+api
-        print("****************")
-        print(url)
-        print("****************")
+        tenant_id = ReadConf().readconf("TenantID", "tenant_id")
+        host = ReadConf().readconf("HOST", "host")
+        api = '/api/v1/shopping/cart/num'
+        url = host + api
         header = {
             "token": token,
-            "tenantId": tenantid
+            "tenantId": tenant_id
         }
         logging.info(token)
         req = requests.get(url, headers=header)
@@ -196,34 +195,6 @@ class CartApi(BasePage):
 
 class CartCheck(CartPage, CartApi):
     # 购物车逻辑断言
-    def check_toast_text(self):
-        try:
-            WebDriverWait(
-                self.driver, 5, 0.5).until(
-                ec.presence_of_element_located(
-                    self.get_toast_text()))
-            print("获取到toast提示")
-        except BaseException as e:
-            print("未获取到toast提示", e)
-
-    def check_cart_total_num(self, token):
-        page_total_num = self.get_cart_total_num()
-        api_total_num = CartApi.get_cart_total_num_api(token)
-        self.assert_equal(int(page_total_num), api_total_num)
-
-    def check_cart_product_info(self, token):
-        page_product_name_list = self.get_product_name_list()
-        page_product_num_list = self.get_product_num_text()
-        page_product_num_list=[int(i) for i in page_product_num_list] #全部转成int类型
-        page_product_info = [page_product_name_list, page_product_num_list]
-        api_product_info_list = CartApi.get_cart_list_api(token)
-        api_product_info=[]
-        for api_product_infos in api_product_info_list:
-            api_product_info.append(api_product_infos[1:])
-        api_product_info=list(map(list,zip(*api_product_info)))  #行列转换
-        logging.info(page_product_info)
-        logging.info(api_product_info)
-        TestCase().assertListEqual(page_product_info, api_product_info)
 
     def check_cart_product_del(self, token):
         self.click_cart_edit_btn()
@@ -232,7 +203,6 @@ class CartCheck(CartPage, CartApi):
         except Exception as e:
             print(type(e), e)
             logging.warning("删除按钮未出现")
-
         self.click_select_all_btn()
         self.click_cart_edit_delete_btn()
         self.click_del_popup_sure_btn()
@@ -240,32 +210,5 @@ class CartCheck(CartPage, CartApi):
         TestCase().assertIsNone(api_product_list)
         self.check_exist_in_page("去逛逛")
 
-    def check_goto_anywhere_btn(self):
-        self.click_goto_anywhere_btn()
-        self.check_exist_in_page("花更少，买更好")
 
-    def check_create_order(self):
-        self.check_exist_in_page("配送方式")
 
-    def check_product_add_num(self):
-        add_before = self.get_product_num_text()
-        self.click_product_num_add()
-        add_after = self.get_product_num_text()
-        add_after_expected = int(add_before) + 1
-        self.assert_equal(add_after, add_after_expected)
-        del_before = self.get_product_num_text()
-        self.click_product_num_del()
-        del_after = self.get_product_num_text()
-        del_after_expected = int(del_before) - 1
-        self.assert_equal(del_after, del_after_expected)
-
-    def check_goto_product_detail(self):
-        product_name=self.get_product_name_list()
-        self.click_product_name_01()
-        sleep(2)
-        product_detail_name=ProductPage(self.driver).get_product_name()
-        self.assert_equal(product_name[0],product_detail_name)
-        current_title=self.driver.title
-        current_url=self.driver.current_url
-        self.assert_equal(current_title,"商品详情")
-        self.check_exist_in_string("pages/product/detail?id",current_url)

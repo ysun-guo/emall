@@ -1,5 +1,5 @@
 # encoding=utf-8
-# from selenium.webdriver.common.by import By
+
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from unittest import TestCase
@@ -7,12 +7,15 @@ from selenium.webdriver.chrome.options import Options
 from operate_api import ReturnToken
 from readConf import ReadConf
 import logging
+from selenium.webdriver.common.by import By
+from selenium.common import exceptions
+import hashlib
+import requests
 
 
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
-        host = ReadConf().readconf("HOST", "host")
 
     # 封装定位方式
     def find_element(self, *loc):
@@ -24,6 +27,19 @@ class BasePage:
         except Exception as e:
             raise e
 
+    def is_element_present(self, *loc):
+        try:
+            WebDriverWait(self.driver, 5).until(ec.visibility_of_element_located(*loc))
+        except exceptions.TimeoutException:
+            return False
+        return True
+
+    def is_show_toast(self):
+        loc = (By.TAG_NAME, "uni-toast")
+        flag = self.is_element_present(loc)
+        logging.info("是否有toast提示：" + str(flag))
+        return flag
+
     def find_elements(self, *loc):
         try:
             return WebDriverWait(self.driver, 10, 0.5).until(
@@ -34,10 +50,34 @@ class BasePage:
     # 打开网址
     def visit_url(self, url=None):
         if url is None:
-            url = ReadConf().readconf("URL","homeURL")
+            url = ReadConf().readconf("URL", "homeURL")
         else:
             url = url
         self.driver.get(url)
+
+    @staticmethod
+    def create_md5(str):
+        md5 = hashlib.md5()
+        md5.update(str.encode('utf-8'))
+        str = md5.hexdigest()
+        return str
+
+    def return_saas_token_by_api(self):
+        host = ReadConf().readconf('HOST', 'admin_host')
+        api='/api/v1/account/login'
+        url = host+api
+        user = ReadConf().readconf('AdminUser', 'adminuser')
+        pwd = ReadConf().readconf('AdminUser', 'adminpwd')
+        pwd = self.create_md5(pwd)
+        body={'tenantCode':'namek',
+              'account':user,
+              'password':pwd
+              }
+        text = requests.post(url,data=body)
+        saas_token = text.json()['body']['token']
+        logging.info(saas_token)
+        return saas_token
+
     # 设置手机模式
     def device_dev_set(self):
         mobile_emulation = {"deviceName": "iPhone 8"}
@@ -47,44 +87,25 @@ class BasePage:
         return options
 
     def login_by_js(self, is_member):
-        phone = ReadConf().readconf("PhoneNumber","phone")
+        phone = ReadConf().readconf("PhoneNumber", "phone")
         if is_member:
             member_list = ReturnToken().return_member_info()
             member_id = member_list[0]
             token = member_list[1]
             self.driver.execute_script(
-                "window.localStorage.setItem('namek_emall@zjsyjt@token',JSON.stringify('" +
-                token +
-                "'))")
+                "window.localStorage.setItem('namek_emall@zjsyjt@token',JSON.stringify('" + token + "'))")
             self.driver.execute_script(
-                "window.localStorage.setItem('namek_emall@zjsyjt@member',JSON.stringify({memberId: '" +
-                str(member_id) +
-                "', phone: '" +
-                phone +
-                "'}))")
+                "window.localStorage.setItem('namek_emall@zjsyjt@member',JSON.stringify({id: '" + str(member_id) + "', phone: '" + phone + "'}))")
         else:
             token = ReturnToken().return_visit_token()
-            self.driver.execute_script(
-                "window.localStorage.setItem('namek_emall@zjsyjt@token',JSON.stringify('" +
-                token +
-                "'))")
+            self.driver.execute_script("window.localStorage.setItem('namek_emall@zjsyjt@token',JSON.stringify('" + token + "'))")
         return token
-    # 切换iframe
-
-    def switch_to_frame(self, id_or_name_or_element):
-        self.driver.switch_to.frame(id_or_name_or_element)
-
-    def switch_to_default(self):
-        self.driver.switch_to.default_content()
 
     '''元素操作封装 '''
-
     # 点击元素
+
     def click_element(self, *loc):
-        element = WebDriverWait(
-            self.driver, 10, 0.5).until(
-            ec.element_to_be_clickable(
-                *loc))
+        element = WebDriverWait(self.driver, 10, 0.5).until(ec.element_to_be_clickable(*loc))
         element.click()
 
     # 元素输入
@@ -127,3 +148,9 @@ class BasePage:
 
     def check_exist_in_string(self, str1, str2):
         self.assert_true(str1 in str2)
+
+    def get_toast_text(self):
+        _toast_div = (By.TAG_NAME, 'uni-toast')
+        ele = self.find_element(_toast_div)
+        toast_text = self.get_element_value(ele)
+        return toast_text

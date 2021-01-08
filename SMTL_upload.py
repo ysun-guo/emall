@@ -4,7 +4,7 @@ from email.header import Header
 from email.utils import formataddr
 from email.mime.multipart import MIMEMultipart
 
-def SendMail(filepath,filename1):
+def SendMail(report_filepath,log_filepath,filename1):
 
     my_sender = '1984370982@qq.com'  # 发件人邮箱账号
     my_pass = 'oveaopypjxsyfafj'  # 发件人邮箱密码
@@ -17,10 +17,14 @@ def SendMail(filepath,filename1):
 
     msg.attach(MIMEText('\n\n\n附件是'+filename1+'测试报告', 'plain', 'utf-8'))
 
-    att1 = MIMEText(open(filepath, 'rb').read(), 'base64', 'utf-8')
+    att1 = MIMEText(open(report_filepath, 'rb').read(), 'base64', 'utf-8')
     att1['Content-Type'] = 'application/octet-stream'
-    att1['Content-Disposition'] = 'attachment; filename="test.html"'
+    att1['Content-Disposition'] = 'attachment; filename="test_report.html"'
     msg.attach(att1)
+    att2 = MIMEText(open(log_filepath, 'rb').read(), 'base64', 'utf-8')
+    att2['Content-Type'] = 'application/octet-stream'
+    att2['Content-Disposition'] = 'attachment; filename="test_log.log"'
+    msg.attach(att2)
     try:
         server = smtplib.SMTP_SSL("smtp.qq.com", 465)  # 发件人邮箱中的SMTP服务器，端口是25
         server.login(my_sender, my_pass)  # 括号中对应的是发件人邮箱账号、邮箱密码
