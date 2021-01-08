@@ -143,8 +143,7 @@ class CartPage(BasePage):
         self.click_element(self._product_select_icon)
     # 点击结算按钮
 
-    @check_page
-    def click_create_order_btn(self, expected):
+    def click_create_order_btn(self):
         self.click_element(self._create_order_btn)
 
 
@@ -197,26 +196,6 @@ class CartApi(BasePage):
 class CartCheck(CartPage, CartApi):
     # 购物车逻辑断言
 
-    def check_cart_total_num(self, token):
-        page_total_num = self.get_cart_total_num()
-        api_total_num = CartApi.get_cart_total_num_api(token)
-        self.assert_equal(int(page_total_num), api_total_num)
-
-    def check_cart_product_info(self, token):
-        page_product_name_list = self.get_product_name_list()
-        page_product_num_list = self.get_product_num_text()
-        page_product_num_list = [int(i)
-                                 for i in page_product_num_list]  # 全部转成int类型
-        page_product_info = [page_product_name_list, page_product_num_list]
-        api_product_info_list = CartApi.get_cart_list_api(token)
-        api_product_info = []
-        for api_product_infos in api_product_info_list:
-            api_product_info.append(api_product_infos[1:])
-        api_product_info = list(map(list, zip(*api_product_info)))  # 行列转换
-        logging.info(page_product_info)
-        logging.info(api_product_info)
-        TestCase().assertListEqual(page_product_info, api_product_info)
-
     def check_cart_product_del(self, token):
         self.click_cart_edit_btn()
         try:
@@ -224,7 +203,6 @@ class CartCheck(CartPage, CartApi):
         except Exception as e:
             print(type(e), e)
             logging.warning("删除按钮未出现")
-
         self.click_select_all_btn()
         self.click_cart_edit_delete_btn()
         self.click_del_popup_sure_btn()
@@ -232,30 +210,5 @@ class CartCheck(CartPage, CartApi):
         TestCase().assertIsNone(api_product_list)
         self.check_exist_in_page("去逛逛")
 
-    def check_goto_anywhere_btn(self):
-        self.click_goto_anywhere_btn()
-        self.check_exist_in_page("花更少，买更好")
 
-    def check_create_order(self):
-        self.check_exist_in_page("配送方式")
 
-    def check_product_add_num(self):
-        add_before = self.get_product_num_text()
-        self.click_product_num_add()
-        add_after = self.get_product_num_text()
-        add_after_expected = int(add_before) + 1
-        self.assert_equal(add_after, add_after_expected)
-        del_before = self.get_product_num_text()
-        self.click_product_num_del()
-        del_after = self.get_product_num_text()
-        del_after_expected = int(del_before) - 1
-        self.assert_equal(del_after, del_after_expected)
-
-    def check_goto_product_detail(self):
-        product_name = self.get_product_name_list()
-        self.click_product_name_01()
-        sleep(2)
-        product_detail_name = ProductPage(self.driver).get_product_name()
-        self.assert_equal(product_name[0], product_detail_name)
-        ec.url_contains("pages/product/detail?id")
-        ec.title_is("商品详情")

@@ -5,12 +5,14 @@ from public.BasePage import BasePage
 from pages.home_page import HomePage
 from pages.search_page import SearchPage
 from public.public import get_screen_in_case_end_or_error
+from selenium.webdriver.support import expected_conditions as ec
 from selenium import webdriver
-
+from time import sleep
+import logging
 
 @ddt
 class SearchTest(unittest.TestCase):
-    # '''搜索测试'''
+
     @classmethod
     def setUpClass(cls):
         options = BasePage(cls).device_dev_set()
@@ -26,17 +28,24 @@ class SearchTest(unittest.TestCase):
     def setUp(self):
         BasePage(self.driver).visit_url()
 
-    # @data(("12456", "12356"), ("user02", '123456'))
-    @data("限购测试")
-    # @unpack
+    @data("测试商品")
     @get_screen_in_case_end_or_error
     def test_search(self, value):
+        logging.info('**输入商品名称搜索，验证是否有搜索到相关商品**')
         HomePage(self.driver).click_search_box()
-        SearchPage(self.driver).check_search_have_product(value)
+        SearchPage(self.driver).send_key_search_box(value)
+        sleep(2)
+        for productName in SearchPage(self.driver).get_product_names():
+            name = SearchPage(self.driver).get_element_value(productName)
+            logging.info("商品名称:" + name)
+            BasePage(self.driver).check_exist_in_string(value, name)
 
     def test_search_cancel(self):
+        logging.info('**在搜索页面点击取消，验证是否会返回到首页**')
         HomePage(self.driver).click_search_box()
-        SearchPage(self.driver).cancel_search()
+        SearchPage(self.driver).click_cancel_button()
+        sleep(2)
+        BasePage(self.driver).assert_true(ec.visibility_of_element_located(HomePage(self.driver).get_shop_window()))
 
 
 if __name__ == '__main__':

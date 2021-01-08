@@ -1,5 +1,5 @@
 # encoding=utf-8
-# from selenium.webdriver.common.by import By
+
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from unittest import TestCase
@@ -9,12 +9,13 @@ from readConf import ReadConf
 import logging
 from selenium.webdriver.common.by import By
 from selenium.common import exceptions
+import hashlib
+import requests
 
 
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
-        host = ReadConf().readconf("HOST", "host")
 
     # 封装定位方式
     def find_element(self, *loc):
@@ -33,15 +34,11 @@ class BasePage:
             return False
         return True
 
-    def get_toast(self):
+    def is_show_toast(self):
         loc = (By.TAG_NAME, "uni-toast")
         flag = self.is_element_present(loc)
-        logging.info("是否有toast提示：" + flag)
-        if flag:
-            toast_text = self.driver.find_element_by_tag_name("uni-toast").text
-        else:
-            toast_text = None
-        return toast_text
+        logging.info("是否有toast提示：" + str(flag))
+        return flag
 
     def find_elements(self, *loc):
         try:
@@ -57,8 +54,31 @@ class BasePage:
         else:
             url = url
         self.driver.get(url)
-    # 设置手机模式
 
+    @staticmethod
+    def create_md5(str):
+        md5 = hashlib.md5()
+        md5.update(str.encode('utf-8'))
+        str = md5.hexdigest()
+        return str
+
+    def return_saas_token_by_api(self):
+        host = ReadConf().readconf('HOST', 'admin_host')
+        api='/api/v1/account/login'
+        url = host+api
+        user = ReadConf().readconf('AdminUser', 'adminuser')
+        pwd = ReadConf().readconf('AdminUser', 'adminpwd')
+        pwd = self.create_md5(pwd)
+        body={'tenantCode':'namek',
+              'account':user,
+              'password':pwd
+              }
+        text = requests.post(url,data=body)
+        saas_token = text.json()['body']['token']
+        logging.info(saas_token)
+        return saas_token
+
+    # 设置手机模式
     def device_dev_set(self):
         mobile_emulation = {"deviceName": "iPhone 8"}
         options = Options()

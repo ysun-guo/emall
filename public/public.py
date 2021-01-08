@@ -2,6 +2,8 @@
 from HTMLReport import addImage
 from unittest import TestCase
 import logging
+from BasePage import BasePage
+import functools
 
 # 添加截图到报告中去
 def get_screen_add_report(driver):
@@ -24,18 +26,21 @@ def get_screen_in_case_end_or_error(func):
 
 
 # 获取页面toast提示的装饰器
-def check_page(func):
-    def f1(obj, expected, *args, **kwargs):
-        func(obj, expected, *args, **kwargs)
-        if TestCase().assertTrue("404" in obj.driver.page_source):
-            TestCase().fail("404")
-        else:
-            toast = obj.get_toast()
-            if toast is None:
-                logging.info("没有出现toast提示")
+def check_page(expected=None):
+    def wrapper(func):
+        def inner_wrapper(obj,*args, **kwargs):
+            func(*args, **kwargs)
+            print(expected)
+            if TestCase().assertTrue("404" in obj.driver.page_source):
+                TestCase().fail("404")
             else:
-                if toast == expected:
-                    logging.info("出现符合预期的提示:" + toast)
+                toast = BasePage(obj.driver).get_toast()
+                if toast is None:
+                    logging.info("没有出现toast提示")
                 else:
-                    TestCase().fail("出现非预期提示:" + toast)
-    return f1
+                    if toast == expected:
+                        logging.info("出现符合预期的提示:" + toast)
+                    else:
+                        TestCase().fail("出现非预期提示:" + toast)
+        return inner_wrapper
+    return wrapper

@@ -6,13 +6,8 @@ class ReadConf():
 
     def readconf(self, section, value):
         config = configparser.ConfigParser()
-        file_path = os.path.dirname(os.getcwd()) + '/public/config.ini'
-        config.read(file_path)
+        # file_path = os.path.dirname(os.getcwd()) + '/public/config.ini'
+        file_path=os.getcwd()+'/public/config.ini'
+        config.read(file_path,encoding="utf-8")
         item = config.get(section, value)
         return item
-
-
-if __name__ == '__main__':
-    test = ReadConf()
-    t = test.readconf('URL', "homeURL")  # 传入sections的值
-    print(t)

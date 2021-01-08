@@ -6,8 +6,7 @@ from time import sleep
 
 
 class ProductPage(BasePage):
-    # 元素位置信息
-    # 商品详情页的按钮
+
     _product_title = (By.CLASS_NAME, 'product-title')
     _product_price = (By.CLASS_NAME, 'price-header-common commonly-used')
     _add_to_car_button = (By.CLASS_NAME, 'add-car-btn')
@@ -17,7 +16,6 @@ class ProductPage(BasePage):
     _product_car_num = (By.CLASS_NAME, 'cart-btn')
     _home_button = (By.CLASS_NAME, 'home-btn')
     _cart_button = (By.CLASS_NAME, 'cart-btn')
-
     # 点击规格信息，打开规格弹窗的信息
     _product_sku_add_to_car_button = (By.CLASS_NAME, 'sku-add-cart')
     _product_sku_buy_button = (By.CLASS_NAME, 'sku-right-now')
@@ -79,12 +77,13 @@ class ProductPage(BasePage):
 
     # 点击打开规格弹窗
     def click_product_item_value(self):
-        self.driver.execute_script("window.scrollBy(0,1000)")
+        self.driver.execute_script("window.scrollBy(0,500)")
         print("已滑动")
         self.click_element(self._product_item_value)
 
     # 点击加购物车按钮
     def click_add_to_car_button(self):
+        self.driver.execute_script("window.scrollBy(0,500)")
         self.click_element(self._add_to_car_button)
 
     # 点击立即购买按钮
@@ -143,17 +142,3 @@ class ProductPage(BasePage):
         self.click_product_item_value()
         self.input_product_num_box(value)
         self.click_product_sku_buy_button()
-
-    def check_add_to_car(self, before, value, after):
-        print(before, value, after)
-        after_expected = int(before) + int(value)
-        self.assert_equal(int(after), after_expected)
-
-    def check_buy(self):
-        self.check_exist_in_page('提交订单')
-
-    def check_return_home(self):
-        self.check_exist_in_page('砍价')
-
-    def check_go_to_cart(self):
-        self.check_exist_in_page('结算')

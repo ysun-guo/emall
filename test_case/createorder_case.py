@@ -2,12 +2,15 @@
 from selenium import webdriver
 import unittest
 from public.BasePage import BasePage
-from pages.createorder_page import CheckCreatOrder,CreateOrderPage
+from pages.createorder_page import CreateOrderPage
 from pages.home_page import HomePage
 from pages.search_page import SearchPage
 from pages.product_page import ProductPage
 from public.public import get_screen_in_case_end_or_error
 from ddt import data,ddt
+from selenium.webdriver.support import expected_conditions as ec
+import logging
+from time import sleep
 
 @ddt
 class CreateOrderTest(unittest.TestCase):
@@ -26,27 +29,39 @@ class CreateOrderTest(unittest.TestCase):
     def setUp(self):
         BasePage(self.driver).visit_url()
 
-    # 提交订单页的页面元素检查
-    # @data("限购测试")
-    # @get_screen_in_case_end_or_error
-    # def test_create_order_info_check(self,value):
-    #     HomePage(self.driver).click_search_box()
-    #     SearchPage(self.driver).send_key_search_box()
-    #     SearchPage(self.driver).click_search_product_01()
-    #     ProductPage(self.driver).product_buy(value)
-    #     CheckCreatOrder(self.driver).check_page_is_show()
+    @data("测试商品")
+    @get_screen_in_case_end_or_error
+    def test_create_order_info_check(self,value):
+        logging.info('**从商品详情页，点击立即购买，验证是否跳转到提交订单页**')
+        HomePage(self.driver).click_search_box()
+        SearchPage(self.driver).send_key_search_box()
+        SearchPage(self.driver).click_search_product_01()
+        ProductPage(self.driver).product_buy(value)
+        BasePage(self.driver).assert_true(ec.visibility_of_element_located(CreateOrderPage(self.driver).get_addr_form()))
+        logging.info("收货人地址栏已展示")
+        BasePage(self.driver).assert_true(ec.visibility_of_element_located(CreateOrderPage(self.driver).get_product_list_form()))
+        logging.info("商品列表已展示")
+        BasePage(self.driver).assert_true(ec.visibility_of_element_located(CreateOrderPage(self.driver).get_order_fee_form()))
+        logging.info("金额计算区域已展示")
+        BasePage(self.driver).assert_true(ec.visibility_of_element_located(CreateOrderPage(self.driver).get_create_order_btn_form()))
+        logging.info("提交订单按钮栏已展示")
 
-    # 点击提交订单按钮，检查
-    @data("限购测试")
+    @data("测试商品")
     @get_screen_in_case_end_or_error
     def test_create_order_check(self,value):
-        expected = None
+        logging.info('**在提交订单页，点击提交订单，验证是否跳转到支付页面**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box()
         SearchPage(self.driver).click_search_product_01()
         ProductPage(self.driver).product_buy(value)
         CreateOrderPage(self.driver).click_creat_order_btn()
-        CheckCreatOrder(self.driver).check_create_order(expected)
+        sleep(2)
+        BasePage(self.driver).assert_true(ec.url_contains('pages/pay/pay?orderId'))
+        BasePage(self.driver).assert_true(ec.title_is('订单支付'))
+        BasePage(self.driver).assert_true(ec.visibility_of_element_located(CreateOrderPage(self.driver).get_pay_btn()))
+        logging.info("提交订单按钮已展示")
+        BasePage(self.driver).assert_true(ec.visibility_of_element_located(CreateOrderPage(self.driver).get_pay_fee_form()))
+        logging.info("价格区域已展示")
 
 if __name__ == '__main__':
     unittest.main()
