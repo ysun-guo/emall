@@ -7,15 +7,12 @@ import sys
 import SMTL_upload
 os.chdir(sys.path[0])
 
-# 收集测试用例
-
 
 def create_my_suit():
     test_dir = "test_case"
     discover = unittest.defaultTestLoader.discover(
         test_dir, pattern="*case.py", top_level_dir=None)
     return discover
-
 
 
 if __name__ == '__main__':
@@ -30,6 +27,6 @@ if __name__ == '__main__':
                                    )
     runner.run(my_suit)
     # 发送邮件
-    report_path=os.getcwd()+'/report/'+filename+'.html'
-    log_path=os.getcwd()+'/report/'+filename+'.log'
-    SMTL_upload.SendMail(report_path, log_path, filename)
+    report_path = os.getcwd()+'/report/'+filename+'.html'
+    log_path = os.getcwd()+'/report/'+filename+'.log'
+    SMTL_upload.send_email(report_path, log_path, filename)

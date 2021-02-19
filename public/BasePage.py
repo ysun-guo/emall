@@ -40,6 +40,13 @@ class BasePage:
         logging.info("是否有toast提示：" + str(flag))
         return flag
 
+    def is_show_404(self):
+        text = '404 Not Found'
+        if text in self.driver.page_source:
+            return True
+        else:
+            return False
+
     def find_elements(self, *loc):
         try:
             return WebDriverWait(self.driver, 10, 0.5).until(
@@ -56,24 +63,21 @@ class BasePage:
         self.driver.get(url)
 
     @staticmethod
-    def create_md5(str):
+    def create_md5(str1):
         md5 = hashlib.md5()
-        md5.update(str.encode('utf-8'))
-        str = md5.hexdigest()
-        return str
+        md5.update(str1.encode('utf-8'))
+        str1 = md5.hexdigest()
+        return str1
 
     def return_saas_token_by_api(self):
         host = ReadConf().readconf('HOST', 'admin_host')
-        api='/api/v1/account/login'
+        api = '/api/v1/account/login'
         url = host+api
         user = ReadConf().readconf('AdminUser', 'adminuser')
         pwd = ReadConf().readconf('AdminUser', 'adminpwd')
         pwd = self.create_md5(pwd)
-        body={'tenantCode':'namek',
-              'account':user,
-              'password':pwd
-              }
-        text = requests.post(url,data=body)
+        body = {'tenantCode': 'namek', 'account': user, 'password': pwd}
+        text = requests.post(url, data=body)
         saas_token = text.json()['body']['token']
         logging.info(saas_token)
         return saas_token
@@ -88,22 +92,22 @@ class BasePage:
 
     def login_by_js(self, is_member):
         phone = ReadConf().readconf("PhoneNumber", "phone")
+        tenant_code = ReadConf().readconf("Tenant", "tenant_code")
         if is_member:
             member_list = ReturnToken().return_member_info()
             member_id = member_list[0]
             token = member_list[1]
             self.driver.execute_script(
-                "window.localStorage.setItem('namek_emall@zjsyjt@token',JSON.stringify('" + token + "'))")
+                "window.localStorage.setItem('namek_emall@"+tenant_code+"@token',JSON.stringify('" + token + "'))")
             self.driver.execute_script(
-                "window.localStorage.setItem('namek_emall@zjsyjt@member',JSON.stringify({id: '" + str(member_id) + "', phone: '" + phone + "'}))")
+                "window.localStorage.setItem('namek_emall@"+tenant_code+"@member',JSON.stringify({id: '" + str(member_id) + "', phone: '" + phone + "'}))")
         else:
             token = ReturnToken().return_visit_token()
-            self.driver.execute_script("window.localStorage.setItem('namek_emall@zjsyjt@token',JSON.stringify('" + token + "'))")
+            self.driver.execute_script("window.localStorage.setItem('namek_emall@"+tenant_code+"@token',JSON.stringify('" + token + "'))")
         return token
 
     '''元素操作封装 '''
     # 点击元素
-
     def click_element(self, *loc):
         element = WebDriverWait(self.driver, 10, 0.5).until(ec.element_to_be_clickable(*loc))
         element.click()
@@ -123,6 +127,9 @@ class BasePage:
     # 获取某个元素的属性
     def get_element_attribute(self, element, attribute):
         return element.get_attribute(attribute)
+
+    def get_url(self):
+        return self.driver.current_url
 
     '''断言封装'''
 
@@ -146,6 +153,7 @@ class BasePage:
     def check_exist_in_page(self, text):
         self.assert_true(text in self.driver.page_source)
 
+    # 校验字符串是否包含指定的字符串
     def check_exist_in_string(self, str1, str2):
         self.assert_true(str1 in str2)
 

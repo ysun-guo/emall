@@ -4,11 +4,8 @@ from BasePage import BasePage
 from unittest import TestCase
 import logging
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as ec
-from public.public import check_page
 import requests
 from readConf import ReadConf
-from product_page import ProductPage
 from time import sleep
 
 
@@ -153,7 +150,7 @@ class CartApi(BasePage):
     @staticmethod
     def get_cart_list_api(token):
         # 获取用户的购物车列表id，name，num
-        tenant_id = ReadConf().readconf("TenantID", "tenant_id")
+        tenant_id = ReadConf().readconf("Tenant", "tenant_id")
         host = ReadConf().readconf("HOST", "host")
         api = '/api/v1/shopping/cart/list'
         url = host + api
@@ -178,7 +175,7 @@ class CartApi(BasePage):
 
     @staticmethod
     def get_cart_total_num_api(token):
-        tenant_id = ReadConf().readconf("TenantID", "tenant_id")
+        tenant_id = ReadConf().readconf("Tenant", "tenant_id")
         host = ReadConf().readconf("HOST", "host")
         api = '/api/v1/shopping/cart/num'
         url = host + api
@@ -209,6 +206,3 @@ class CartCheck(CartPage, CartApi):
         api_product_list = CartApi.get_cart_list_api(token)
         TestCase().assertIsNone(api_product_list)
         self.check_exist_in_page("去逛逛")
-
-
-

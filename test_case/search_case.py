@@ -10,6 +10,7 @@ from selenium import webdriver
 from time import sleep
 import logging
 
+
 @ddt
 class SearchTest(unittest.TestCase):
 
