@@ -50,7 +50,7 @@ class LoginPage(BasePage):
     @staticmethod
     def get_code_by_api(saas_token, req_time):
         host = ReadConf().readconf("HOST", "admin_host")
-        tenant_id = ReadConf().readconf("TenantID", "tenant_id")
+        tenant_id = ReadConf().readconf("Tenant", "tenant_id")
         phone = ReadConf().readconf("PhoneNumber", "phone")
         start_time = datetime.datetime.strftime((req_time + datetime.timedelta(minutes=-1)), '%Y-%m-%d %H:%M:%S')
         end_time = datetime.datetime.strftime(req_time, '%Y-%m-%d %H:%M:%S')

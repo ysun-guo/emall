@@ -27,7 +27,7 @@ class LoginTest(unittest.TestCase):
         cls.driver.quit()
 
     def setUp(self):
-        BasePage(self.driver).visit_url(ReadConf().readconf("URL","cartURL"))
+        BasePage(self.driver).visit_url(ReadConf().readconf("URL", "cartURL"))
 
     @get_screen_in_case_end_or_error
     def test_login_success(self):
@@ -44,7 +44,7 @@ class LoginTest(unittest.TestCase):
                 LoginPage(self.driver).click_invite_cancel()
             except exceptions.TimeoutException:
                 logging.info('**m没有出现输入邀请码页面**')
-            BasePage(self.driver).assert_true(ec.visibility_of_element_located((By.CLASS_NAME,"uni-tabbar")))
+            BasePage(self.driver).assert_true(ec.visibility_of_element_located((By.CLASS_NAME, "uni-tabbar")))
             BasePage(self.driver).check_exist_in_page("购物车")
             sleep(2)
         else:

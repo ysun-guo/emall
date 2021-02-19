@@ -7,10 +7,11 @@ from pages.home_page import HomePage
 from pages.search_page import SearchPage
 from pages.product_page import ProductPage
 from public.public import get_screen_in_case_end_or_error
-from ddt import data,ddt
+from ddt import data, ddt, unpack
 from selenium.webdriver.support import expected_conditions as ec
 import logging
 from time import sleep
+
 
 @ddt
 class CreateOrderTest(unittest.TestCase):
@@ -29,14 +30,15 @@ class CreateOrderTest(unittest.TestCase):
     def setUp(self):
         BasePage(self.driver).visit_url()
 
-    @data("测试商品")
+    @data(["测试商品", 1])
+    @unpack
     @get_screen_in_case_end_or_error
-    def test_create_order_info_check(self,value):
+    def test_create_order_info_check(self, value, num):
         logging.info('**从商品详情页，点击立即购买，验证是否跳转到提交订单页**')
         HomePage(self.driver).click_search_box()
-        SearchPage(self.driver).send_key_search_box()
+        SearchPage(self.driver).send_key_search_box(value)
         SearchPage(self.driver).click_search_product_01()
-        ProductPage(self.driver).product_buy(value)
+        ProductPage(self.driver).product_buy(num)
         BasePage(self.driver).assert_true(ec.visibility_of_element_located(CreateOrderPage(self.driver).get_addr_form()))
         logging.info("收货人地址栏已展示")
         BasePage(self.driver).assert_true(ec.visibility_of_element_located(CreateOrderPage(self.driver).get_product_list_form()))
@@ -46,14 +48,15 @@ class CreateOrderTest(unittest.TestCase):
         BasePage(self.driver).assert_true(ec.visibility_of_element_located(CreateOrderPage(self.driver).get_create_order_btn_form()))
         logging.info("提交订单按钮栏已展示")
 
-    @data("测试商品")
+    @data(["测试商品", 1])
+    @unpack
     @get_screen_in_case_end_or_error
-    def test_create_order_check(self,value):
+    def test_create_order_check(self, value, num):
         logging.info('**在提交订单页，点击提交订单，验证是否跳转到支付页面**')
         HomePage(self.driver).click_search_box()
-        SearchPage(self.driver).send_key_search_box()
+        SearchPage(self.driver).send_key_search_box(value)
         SearchPage(self.driver).click_search_product_01()
-        ProductPage(self.driver).product_buy(value)
+        ProductPage(self.driver).product_buy(num)
         CreateOrderPage(self.driver).click_creat_order_btn()
         sleep(2)
         BasePage(self.driver).assert_true(ec.url_contains('pages/pay/pay?orderId'))
@@ -62,6 +65,7 @@ class CreateOrderTest(unittest.TestCase):
         logging.info("提交订单按钮已展示")
         BasePage(self.driver).assert_true(ec.visibility_of_element_located(CreateOrderPage(self.driver).get_pay_fee_form()))
         logging.info("价格区域已展示")
+
 
 if __name__ == '__main__':
     unittest.main()

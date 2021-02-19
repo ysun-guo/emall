@@ -5,7 +5,7 @@ from readConf import ReadConf
 class ReturnToken():
 
     def return_visit_token(self):
-        tenant_id = ReadConf().readconf("TenantID", "tenant_id")
+        tenant_id = ReadConf().readconf("Tenant", "tenant_id")
         host = ReadConf().readconf("HOST", "host")
         api = '/api/v1/login/loginByAnonymous'
         url = host + api
@@ -17,7 +17,7 @@ class ReturnToken():
 
     def return_member_info(self):
         phone = ReadConf().readconf("PhoneNumber", "phone")
-        tenant_id = ReadConf().readconf("TenantID", "tenant_id")
+        tenant_id = ReadConf().readconf("Tenant", "tenant_id")
         host = ReadConf().readconf("HOST", "host")
         api = '/api/v1/login/loginByPhone'
         url = host + api

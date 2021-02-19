@@ -37,7 +37,7 @@ class SearchPage(BasePage):
     '''元素操作层'''
 
     # 输入搜索关键字
-    def send_key_search_box(self, value='测试'):
+    def send_key_search_box(self, value='拼团多规格-zcx'):
         self.sendkey_element(self.get_search_box(), value)
         self.sendkey_element(self.get_search_box(), Keys.RETURN)
 
