@@ -10,14 +10,17 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 import logging
 from selenium.common import exceptions
+import os
 
 
 class LoginTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        driver_path = os.getcwd() + '/chromedriver'
+        # driver_path = 'chromedriver'
         options = BasePage(cls).device_dev_set()
-        cls.driver = webdriver.Chrome(chrome_options=options)
+        cls.driver = webdriver.Chrome(executable_path=driver_path, chrome_options=options)
         cls.driver.implicitly_wait(5)
         BasePage(cls.driver).visit_url()
         BasePage(cls.driver).login_by_js(False)
@@ -44,11 +47,13 @@ class LoginTest(unittest.TestCase):
                 LoginPage(self.driver).click_invite_cancel()
             except exceptions.TimeoutException:
                 logging.info('**m没有出现输入邀请码页面**')
+            logging.info(self.driver.current_url)
+            BasePage(self.driver).assert_false(ec.url_contains('login/hLogin'))
             BasePage(self.driver).assert_true(ec.visibility_of_element_located((By.CLASS_NAME, "uni-tabbar")))
             BasePage(self.driver).check_exist_in_page("购物车")
             sleep(2)
         else:
-            print("没有收到验证码")
+            logging.error("没有收到验证码")
 
 
 if __name__ == '__main__':

@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium import webdriver
 from time import sleep
 import logging
+import os
 
 
 @ddt
@@ -16,8 +17,10 @@ class SearchTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        driver_path = os.getcwd() + '/chromedriver'
+        # driver_path = 'chromedriver'
         options = BasePage(cls).device_dev_set()
-        cls.driver = webdriver.Chrome(chrome_options=options)
+        cls.driver = webdriver.Chrome(executable_path=driver_path, chrome_options=options)
         BasePage(cls.driver).visit_url()
         BasePage(cls.driver).login_by_js(False)
         cls.driver.implicitly_wait(5)
@@ -29,7 +32,7 @@ class SearchTest(unittest.TestCase):
     def setUp(self):
         BasePage(self.driver).visit_url()
 
-    @data("测试商品")
+    @data("测试商品买了也不发货")
     @get_screen_in_case_end_or_error
     def test_search(self, value):
         logging.info('**输入商品名称搜索，验证是否有搜索到相关商品**')

@@ -1,7 +1,6 @@
 # coding=utf-8
 
 from public.BasePage import BasePage
-import logging
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from time import sleep
@@ -37,7 +36,7 @@ class SearchPage(BasePage):
     '''元素操作层'''
 
     # 输入搜索关键字
-    def send_key_search_box(self, value='拼团多规格-zcx'):
+    def send_key_search_box(self, value=' '):
         self.sendkey_element(self.get_search_box(), value)
         self.sendkey_element(self.get_search_box(), Keys.RETURN)
 

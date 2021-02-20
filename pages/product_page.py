@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from BasePage import BasePage
+from public.BasePage import BasePage
 from selenium.webdriver.common.by import By
 from time import sleep
 import logging
@@ -119,12 +119,12 @@ class ProductPage(BasePage):
         logging.info("返回一个list，len(list)代表有几个规格类型，list[n]的值代表第n个规格类型有几个规格值")
         _sku = (By.XPATH, '//uni-view[@class="product-skus"]/uni-view')
         count = len(self.find_elements(_sku))
-        for i in range(count):
-            j = i + 1
+        for j in range(1, count+1):
             _sku_value = (By.XPATH, "//uni-view[@class='product-skus']/uni-view[" + str(j) + "]/uni-view[2]/uni-button")
             n = len(self.find_elements(_sku_value))
-            x = random.randint(1, n+1)
+            x = random.randint(1, n)
             _sku_ = (By.XPATH, "//uni-view[@class='product-skus']/uni-view[" + str(j) + "]/uni-view[2]/uni-button[" + str(x) + "]")
+            print(_sku_)
             self.click_element(_sku_)
 
     # 点击打开规格弹窗
@@ -194,7 +194,8 @@ class ProductPage(BasePage):
         page_special_info_list = [product_promotion_tag, product_origin_price, product_promotion_price, product_promotion_stock]
         return page_special_info_list
 
-    def get_api_special_price_info(self, product_id, token):
+    @staticmethod
+    def get_api_special_price_info(product_id, token):
         host = ReadConf().readconf("HOST", "host")
         api = '/api/v1/product/emall/'+product_id+'/detail'
         tenant_id = ReadConf().readconf("Tenant", "tenant_id")
