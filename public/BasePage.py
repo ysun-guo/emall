@@ -4,8 +4,8 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from unittest import TestCase
 from selenium.webdriver.chrome.options import Options
-from operate_api import ReturnToken
-from readConf import ReadConf
+from public.operate_api import ReturnToken
+from public.readConf import ReadConf
 import logging
 from selenium.webdriver.common.by import By
 from selenium.common import exceptions
@@ -83,7 +83,8 @@ class BasePage:
         return saas_token
 
     # 设置手机模式
-    def device_dev_set(self):
+    @staticmethod
+    def device_dev_set():
         mobile_emulation = {"deviceName": "iPhone 8"}
         options = Options()
         options.add_experimental_option("mobileEmulation", mobile_emulation)

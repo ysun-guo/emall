@@ -1,5 +1,5 @@
 import requests
-from readConf import ReadConf
+from public.readConf import ReadConf
 
 
 class ReturnToken():

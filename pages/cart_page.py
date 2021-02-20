@@ -1,11 +1,11 @@
 # coding=utf-8
 
-from BasePage import BasePage
+from public.BasePage import BasePage
 from unittest import TestCase
 import logging
 from selenium.webdriver.common.by import By
 import requests
-from readConf import ReadConf
+from public.readConf import ReadConf
 from time import sleep
 
 

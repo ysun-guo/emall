@@ -2,10 +2,11 @@
 
 from public.BasePage import BasePage
 from selenium.webdriver.common.by import By
-from readConf import ReadConf
+from public.readConf import ReadConf
 import requests
 import datetime
 from selenium.webdriver.support import expected_conditions as ec
+import logging
 
 
 class LoginPage(BasePage):
@@ -79,7 +80,7 @@ class LoginPage(BasePage):
 
     def get_code(self, saas_token, req_time):
         code = self.get_code_by_api(saas_token, req_time)
-        print(code)
+        logging.info(code)
         start_time = datetime.datetime.utcnow()
         while True:
             end_time = datetime.datetime.utcnow()

@@ -2,24 +2,27 @@
 from selenium import webdriver
 import unittest
 from public.BasePage import BasePage
-from cart_page import CartPage
-from cart_page import CartApi
-from product_page import ProductPage
-from createorder_page import CreateOrderPage
+from pages.cart_page import CartPage
+from pages.cart_page import CartApi
+from pages.product_page import ProductPage
+from pages.createorder_page import CreateOrderPage
 from public.readConf import ReadConf
 from public.public import get_screen_in_case_end_or_error
 from selenium.webdriver.support import expected_conditions as ec
 from time import sleep
 import logging
 from unittest import TestCase
+import os
 
 
 class CartTest(unittest.TestCase):
 
+
     @classmethod
     def setUpClass(cls):
+        driver_path = os.getcwd() + '/chromedriver'
         options = BasePage(cls).device_dev_set()
-        cls.driver = webdriver.Chrome(chrome_options=options)
+        cls.driver = webdriver.Chrome(executable_path=driver_path, chrome_options=options)
         cls.driver.implicitly_wait(5)
         BasePage(cls.driver).visit_url()
         cls.token = BasePage(cls.driver).login_by_js(True)
