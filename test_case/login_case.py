@@ -48,7 +48,8 @@ class LoginTest(unittest.TestCase):
             except exceptions.TimeoutException:
                 logging.info('**m没有出现输入邀请码页面**')
             logging.info(self.driver.current_url)
-            BasePage(self.driver).assert_false(ec.url_contains('login/hLogin'))
+            current_url = self.driver.current_url
+            BasePage(self.driver).assert_true('login/hLogin' not in current_url)
             BasePage(self.driver).assert_true(ec.visibility_of_element_located((By.CLASS_NAME, "uni-tabbar")))
             BasePage(self.driver).check_exist_in_page("购物车")
             sleep(2)
