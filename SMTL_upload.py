@@ -7,6 +7,10 @@ from email.mime.multipart import MIMEMultipart
 
 def send_email(report_filepath, log_filepath, filename1):
 
+    logFile = open(log_filepath, 'r')
+    lines = logFile.readlines()
+    list = lines[-7:-1]
+    results=''.join(list)
     my_sender = '1984370982@qq.com'  # 发件人邮箱账号
     my_pass = 'oveaopypjxsyfafj'  # 发件人邮箱密码
     my_user = 'suny@namek.com.cn'  # 收件人邮箱账号
@@ -14,7 +18,9 @@ def send_email(report_filepath, log_filepath, filename1):
     msg['From'] = formataddr(["FromTest", my_sender])  # 括号里的对应发件人邮箱昵称、发件人邮箱账号
     msg['To'] = formataddr(["FK", my_user])  # 括号里的对应收件人邮箱昵称、收件人邮箱账号
     msg['Subject'] = Header(filename1+"测试报告", 'utf-8')  # 邮件的主题，也可以说是标题
-    msg.attach(MIMEText('\n\n\n附件是'+filename1+'测试报告', 'plain', 'utf-8'))
+    msg.attach(MIMEText('\n\n\n附件是'+filename1+'测试报告\n\n', 'plain', 'utf-8'))
+    msg.attach(MIMEText(results, 'plain', 'utf-8'))
+    msg.attach(MIMEText('\n\n\n附件是'+filename1+'测试报告\n\n', 'plain', 'utf-8'))
     att1 = MIMEText(open(report_filepath, 'rb').read(), 'base64', 'utf-8')
     att1['Content-Type'] = 'application/octet-stream'
     att1['Content-Disposition'] = 'attachment; filename="test_report.html"'
@@ -31,3 +37,4 @@ def send_email(report_filepath, log_filepath, filename1):
         print("邮件发送成功")
     except smtplib.SMTPException:
         print("Error: 无法发送邮件")
+
