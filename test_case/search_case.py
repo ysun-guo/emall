@@ -32,7 +32,7 @@ class SearchTest(unittest.TestCase):
     def setUp(self):
         BasePage(self.driver).visit_url()
 
-    @data("测试商品买了也不发货")
+    @data("优惠金额验证3")
     @get_screen_in_case_end_or_error
     def test_search(self, value):
         logging.info('**输入商品名称搜索，验证是否有搜索到相关商品**')
@@ -44,6 +44,7 @@ class SearchTest(unittest.TestCase):
             logging.info("商品名称:" + name)
             BasePage(self.driver).check_exist_in_string(value, name)
 
+    @get_screen_in_case_end_or_error
     def test_search_cancel(self):
         logging.info('**在搜索页面点击取消，验证是否会返回到首页**')
         HomePage(self.driver).click_search_box()

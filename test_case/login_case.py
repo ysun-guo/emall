@@ -11,6 +11,7 @@ from selenium.webdriver.common.by import By
 import logging
 from selenium.common import exceptions
 import os
+from unittest import TestCase
 
 
 class LoginTest(unittest.TestCase):
@@ -54,7 +55,7 @@ class LoginTest(unittest.TestCase):
             BasePage(self.driver).check_exist_in_page("购物车")
             sleep(2)
         else:
-            logging.error("没有收到验证码")
+            TestCase().fail(msg="没有收到验证码")
 
 
 if __name__ == '__main__':

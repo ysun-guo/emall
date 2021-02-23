@@ -18,7 +18,6 @@ def send_email(report_filepath, log_filepath, filename1):
     msg['From'] = formataddr(["FromTest", my_sender])  # 括号里的对应发件人邮箱昵称、发件人邮箱账号
     msg['To'] = formataddr(["FK", my_user])  # 括号里的对应收件人邮箱昵称、收件人邮箱账号
     msg['Subject'] = Header(filename1+"测试报告", 'utf-8')  # 邮件的主题，也可以说是标题
-    msg.attach(MIMEText('\n\n\n附件是'+filename1+'测试报告\n\n', 'plain', 'utf-8'))
     msg.attach(MIMEText(results, 'plain', 'utf-8'))
     msg.attach(MIMEText('\n\n\n附件是'+filename1+'测试报告\n\n', 'plain', 'utf-8'))
     att1 = MIMEText(open(report_filepath, 'rb').read(), 'base64', 'utf-8')

@@ -17,7 +17,7 @@ import os
 @ddt
 class CreateOrderTest(unittest.TestCase):
 
-    product_name = '测试商品买了也不发货'
+    product_name = '优惠金额验证3'
 
     @classmethod
     def setUpClass(cls):
