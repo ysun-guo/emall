@@ -78,7 +78,7 @@ class CartTest(unittest.TestCase):
     #
     # def test_switch_sku(self):
     #     pass
-
+    @get_screen_in_case_end_or_error
     def test_create_order(self):
         logging.info('**从购物车列表，点击结算，验证跳转到提交订单页**')
         CartPage(self.driver).click_product_select_icon()
@@ -88,6 +88,7 @@ class CartTest(unittest.TestCase):
         ec.url_contains('emall/pages/order/createOrder')
         ec.visibility_of_element_located(CreateOrderPage(self)._product_list_form)
 
+    @get_screen_in_case_end_or_error
     def test_create_order_no_product(self):
         logging.info('**在购物车页面，不勾选商品，直接点击结算，校验是否有预期的toast**')
         CartPage(self.driver).click_create_order_btn()

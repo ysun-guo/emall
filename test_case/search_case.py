@@ -44,6 +44,7 @@ class SearchTest(unittest.TestCase):
             logging.info("商品名称:" + name)
             BasePage(self.driver).check_exist_in_string(value, name)
 
+    @get_screen_in_case_end_or_error
     def test_search_cancel(self):
         logging.info('**在搜索页面点击取消，验证是否会返回到首页**')
         HomePage(self.driver).click_search_box()
