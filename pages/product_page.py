@@ -190,7 +190,7 @@ class ProductPage(BasePage):
         sku_origin_price = sku_origin_price[1:]
         sku_promotion_price = self.get_element_value(self.find_special_product_sku_promotion_price())
         self.assert_equal(product_origin_price, sku_origin_price)
-        self.assert_equal(product_promotion_price, sku_promotion_price)
+        self.assert_equal(str(product_promotion_price), str(sku_promotion_price))
         page_special_info_list = [product_promotion_tag, product_origin_price, product_promotion_price, product_promotion_stock]
         return page_special_info_list
 

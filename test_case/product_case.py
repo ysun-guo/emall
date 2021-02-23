@@ -86,7 +86,7 @@ class ProductTest(unittest.TestCase):
         BasePage(self.driver).assert_true(ec.title_contains('购物车'))
         BasePage(self.driver).assert_true(ec.url_contains('emall/pages/myCart/myCart'))
         
-    @data("压测专用商品-参加特价活动")
+    @data("蓝月亮茶清天然绿茶洗洁精500g")
     @get_screen_in_case_end_or_error
     def test_special_product_info_check(self, value):
         logging.info('**在商品详情页，与接口返回进行对比，验证特价活动的商品价格是否展示正确**')
@@ -100,7 +100,7 @@ class ProductTest(unittest.TestCase):
         logging.info(api_special_info_list)
         self.assertListEqual(page_special_info_list, api_special_info_list)
 
-    @data(["测试商品买了也不发货", 1])
+    @data(["优惠金额验证3", 1])
     @unpack
     @get_screen_in_case_end_or_error
     def test_product_add_to_car(self, value, num):
