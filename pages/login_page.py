@@ -43,7 +43,7 @@ class LoginPage(BasePage):
         self.click_element(self._submit_btn)
 
     def click_invite_cancel(self):
-        if ec.visibility_of_element_located(self._invite_cancel):
+        if BasePage(self.driver).is_element_present(self._invite_cancel):
             self.click_element(self._invite_cancel)
         else:
             print("没有出现输入邀请码页面")

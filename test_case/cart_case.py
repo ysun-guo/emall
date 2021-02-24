@@ -86,7 +86,11 @@ class CartTest(unittest.TestCase):
         sleep(3)
         ec.title_contains('提交订单')
         ec.url_contains('emall/pages/order/createOrder')
-        ec.visibility_of_element_located(CreateOrderPage(self)._product_list_form)
+        res = BasePage(self.driver).is_element_present(CreateOrderPage(self)._product_list_form)
+        if res is True:
+            logging.info('商品模块已展示')
+        else:
+            TestCase().fail('商品模块未展示')
 
     @get_screen_in_case_end_or_error
     def test_create_order_no_product(self):

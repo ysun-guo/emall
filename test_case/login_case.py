@@ -51,7 +51,7 @@ class LoginTest(unittest.TestCase):
             logging.info(self.driver.current_url)
             current_url = self.driver.current_url
             BasePage(self.driver).assert_true('login/hLogin' not in current_url)
-            BasePage(self.driver).assert_true(ec.visibility_of_element_located((By.CLASS_NAME, "uni-tabbar")))
+            BasePage(self.driver).assert_true(BasePage(self.driver).is_element_present((By.CLASS_NAME, "uni-tabbar")))
             BasePage(self.driver).check_exist_in_page("购物车")
             sleep(2)
         else:

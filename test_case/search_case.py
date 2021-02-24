@@ -50,7 +50,7 @@ class SearchTest(unittest.TestCase):
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).click_cancel_button()
         sleep(2)
-        BasePage(self.driver).assert_true(ec.visibility_of_element_located(HomePage(self.driver).get_shop_window()))
+        BasePage(self.driver).assert_true(BasePage(self.driver).is_element_present(HomePage(self.driver)._shopWindow))
 
 
 if __name__ == '__main__':

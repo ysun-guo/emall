@@ -74,7 +74,7 @@ class ProductTest(unittest.TestCase):
         SearchPage(self.driver).send_key_search_box()
         SearchPage(self.driver).click_search_product_01()
         ProductPage(self.driver).click_home_button()
-        HomePage(self.driver).check_product_show()
+        BasePage(self.driver).assert_true(BasePage(self.driver).is_element_present(HomePage(self.driver)._product))
 
     @get_screen_in_case_end_or_error
     def test_go_to_cart(self):
