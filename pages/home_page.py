@@ -46,32 +46,3 @@ class HomePage(BasePage):
         self.click_element(self._search_box)
 
     '''业务层'''
-    # 验证橱窗是否展示
-
-    def check_shop_window_show(self):
-        self.assert_true(
-            ec.visibility_of_element_located(
-                self.get_shop_window()))
-        logging.info("橱窗已展示")
-
-    # 验证广告位是否展示
-    def check_advert_show(self):
-        self.assert_true(ec.visibility_of_element_located(self.get_advert()))
-        logging.info("广告位已展示")
-    # 验证商品分类是否展示
-
-    def check_product_show(self):
-        self.assert_true(ec.visibility_of_element_located(self.get_product()))
-        logging.info("商品分类已展示")
-    # 验证banner是否展示
-
-    def check_banner_show(self):
-        self.assert_true(ec.visibility_of_element_located(self.get_banner()))
-        logging.info("banner已展示")
-    # 验证搜索框是否展示
-
-    def check_search_box_show(self):
-        self.assert_true(
-            ec.visibility_of_element_located(
-                self.get_search_box()))
-        logging.info("搜索框已展示")
