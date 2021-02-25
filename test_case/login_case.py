@@ -4,7 +4,6 @@ import unittest
 from public.BasePage import BasePage
 from pages.login_page import LoginPage
 from public.readConf import ReadConf
-from public.public import get_screen_in_case_end_or_error
 from time import sleep
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
@@ -33,7 +32,6 @@ class LoginTest(unittest.TestCase):
     def setUp(self):
         BasePage(self.driver).visit_url(ReadConf().readconf("URL", "cartURL"))
 
-    @get_screen_in_case_end_or_error
     def test_login_success(self):
         logging.info('**输入正确的手机号、验证码，点击登录，验证登录成功**')
         admin_token = LoginPage(self.driver).return_saas_token_by_api()

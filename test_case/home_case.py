@@ -3,7 +3,6 @@ from selenium import webdriver
 import unittest
 from public.BasePage import BasePage
 from pages.home_page import HomePage
-from public.public import get_screen_in_case_end_or_error
 import logging
 import os
 from unittest import TestCase
@@ -28,9 +27,7 @@ class HomeTest(unittest.TestCase):
     def setUp(self):
         BasePage(self.driver).visit_url()
 
-    @get_screen_in_case_end_or_error
     def test_home_check(self):
-
         logging.info('**验证首页的橱窗、广告模板等是否已经展示**')
         res = BasePage(self.driver).is_element_present(HomePage(self.driver)._banner)
         if res is True:
@@ -57,6 +54,7 @@ class HomeTest(unittest.TestCase):
             logging.info('搜索框已展示')
         else:
             TestCase().fail('搜索框未展示')
+
 
 if __name__ == '__main__':
     unittest.main()

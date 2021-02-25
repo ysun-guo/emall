@@ -7,7 +7,6 @@ from pages.cart_page import CartApi
 from pages.product_page import ProductPage
 from pages.createorder_page import CreateOrderPage
 from public.readConf import ReadConf
-from public.public import get_screen_in_case_end_or_error
 from selenium.webdriver.support import expected_conditions as ec
 from time import sleep
 import logging
@@ -16,7 +15,6 @@ import os
 
 
 class CartTest(unittest.TestCase):
-
 
     @classmethod
     def setUpClass(cls):
@@ -35,7 +33,6 @@ class CartTest(unittest.TestCase):
     def setUp(self):
         BasePage(self.driver).visit_url(ReadConf().readconf("URL", "cartURL"))
 
-    @get_screen_in_case_end_or_error
     def test_page_show(self):
         logging.info('**购物车页面元素校验**')
         logging.info('**左上角的商品总数与接口进行比对**')
@@ -65,7 +62,6 @@ class CartTest(unittest.TestCase):
     # def test_multiple_del_product(self):
     #     pass
     #
-    @get_screen_in_case_end_or_error
     def test_product_detail(self):
         logging.info('**在购物车列表，点击第一个商品详情，验证是否跳转到商品详情页面**')
         product_name = CartPage(self.driver).get_product_name_list()
@@ -78,7 +74,7 @@ class CartTest(unittest.TestCase):
     #
     # def test_switch_sku(self):
     #     pass
-    @get_screen_in_case_end_or_error
+
     def test_create_order(self):
         logging.info('**从购物车列表，点击结算，验证跳转到提交订单页**')
         CartPage(self.driver).click_product_select_icon()
@@ -92,7 +88,6 @@ class CartTest(unittest.TestCase):
         else:
             TestCase().fail('商品模块未展示')
 
-    @get_screen_in_case_end_or_error
     def test_create_order_no_product(self):
         logging.info('**在购物车页面，不勾选商品，直接点击结算，校验是否有预期的toast**')
         CartPage(self.driver).click_create_order_btn()
