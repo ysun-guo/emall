@@ -3,7 +3,6 @@ from selenium import webdriver
 import unittest
 from public.BasePage import BasePage
 from pages.category_page import CategoryPage
-from public.public import get_screen_in_case_end_or_error
 import logging
 import os
 from public.readConf import ReadConf
@@ -33,7 +32,6 @@ class CategoryTest(unittest.TestCase):
     def setUp(self):
         BasePage(self.driver).visit_url(ReadConf().readconf("URL", "categoryURL"))
 
-    @get_screen_in_case_end_or_error
     def test_page_show_check(self):
         logging.info('**验证分类页面的元素是否已经展示**')
         res = BasePage(self.driver).is_element_present(CategoryPage(self.driver)._search_box)
@@ -54,8 +52,6 @@ class CategoryTest(unittest.TestCase):
         print(self.driver.title)
         BasePage(self.driver).check_exist_in_string('分类', self.driver.title)
 
-
-    @get_screen_in_case_end_or_error
     def test_click_cate(self):
         logging.info('**分类是否可点击**')
         CategoryPage(self.driver).click_cate()
@@ -66,7 +62,6 @@ class CategoryTest(unittest.TestCase):
             TestCase().fail('右侧商品分类未出现在页面上')
 
     @data("优惠金额验证3")
-    @get_screen_in_case_end_or_error
     def test_click_search_box(self, value):
         logging.info('**搜索框是否可用**')
         CategoryPage(self.driver).click_search_box()

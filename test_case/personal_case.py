@@ -3,7 +3,6 @@ from selenium import webdriver
 import unittest
 from public.BasePage import BasePage
 from pages.personal_page import PersonalPage
-from public.public import get_screen_in_case_end_or_error
 import logging
 import os
 from public.readConf import ReadConf
@@ -32,7 +31,6 @@ class CategoryTest(unittest.TestCase):
     def setUp(self):
         BasePage(self.driver).visit_url(ReadConf().readconf("URL", "personalURL"))
 
-    @get_screen_in_case_end_or_error
     def test_page_show_check(self):
         logging.info('**验证我的页面的元素是否已经展示**')
         res = BasePage(self.driver).is_element_present(PersonalPage(self.driver)._order)
@@ -49,7 +47,6 @@ class CategoryTest(unittest.TestCase):
         BasePage(self.driver).assert_true(
             BasePage(self.driver).is_element_present(PersonalPage(self.driver)._saas_link))
         BasePage(self.driver).check_exist_in_string('我的', self.driver.title)
-
 
 
 if __name__ == '__main__':

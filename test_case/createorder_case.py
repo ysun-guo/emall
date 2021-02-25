@@ -6,7 +6,6 @@ from pages.createorder_page import CreateOrderPage
 from pages.home_page import HomePage
 from pages.search_page import SearchPage
 from pages.product_page import ProductPage
-from public.public import get_screen_in_case_end_or_error
 from ddt import data, ddt, unpack
 from selenium.webdriver.support import expected_conditions as ec
 import logging
@@ -38,7 +37,6 @@ class CreateOrderTest(unittest.TestCase):
 
     @data([product_name, 1])
     @unpack
-    @get_screen_in_case_end_or_error
     def test_create_order_check(self, product_name, num):
         logging.info('**在提交订单页，点击提交订单，验证是否跳转到支付页面**')
         HomePage(self.driver).click_search_box()
@@ -56,7 +54,6 @@ class CreateOrderTest(unittest.TestCase):
 
     @data([product_name, 1])
     @unpack
-    @get_screen_in_case_end_or_error
     def test_create_order_info_check(self, product_name, num):
         logging.info('**从商品详情页，点击立即购买，验证是否跳转到提交订单页**')
         HomePage(self.driver).click_search_box()

@@ -6,11 +6,11 @@ from public.BasePage import BasePage
 from pages.home_page import HomePage
 from pages.search_page import SearchPage
 from pages.product_page import ProductPage
-from public.public import get_screen_in_case_end_or_error
 from time import sleep
 from selenium.webdriver.support import expected_conditions as ec
 from ddt import data, unpack, ddt
 import os
+
 
 @ddt
 class ProductTest(unittest.TestCase):
@@ -33,7 +33,6 @@ class ProductTest(unittest.TestCase):
     def setUp(self):
         BasePage(self.driver).visit_url()
 
-    @get_screen_in_case_end_or_error
     def test_sku_add_to_car(self, value=2):
         logging.info('**在商品详情页，打开规格弹窗，点击加入购物车，验证购物车商品数量是否增加**')
         HomePage(self.driver).click_search_box()
@@ -45,7 +44,6 @@ class ProductTest(unittest.TestCase):
         after_expected = int(before) + int(value)
         BasePage(self.driver).assert_equal(int(after), after_expected)
 
-    @get_screen_in_case_end_or_error
     def test_product_buy(self, value=2):
         logging.info('**在商品详情页，点击立即购买，验证是否跳转到提交订单页**')
         HomePage(self.driver).click_search_box()
@@ -55,7 +53,6 @@ class ProductTest(unittest.TestCase):
         BasePage(self.driver).assert_true(ec.title_contains('提交订单'))
         BasePage(self.driver).assert_true(ec.url_contains('/pages/order/createOrder'))
 
-    @get_screen_in_case_end_or_error
     def test_sku_buy(self, value=1):
         logging.info('**在商品详情页，打开规格弹窗，点击立即购买，验证是否跳转到提交订单页**')
         HomePage(self.driver).click_search_box()
@@ -66,8 +63,6 @@ class ProductTest(unittest.TestCase):
         BasePage(self.driver).assert_true(ec.title_contains('提交订单'))
         BasePage(self.driver).assert_true(ec.url_contains('/pages/order/createOrder'))
 
-
-    @get_screen_in_case_end_or_error
     def test_return_home(self):
         logging.info('**在商品详情页，点击左下角的首页按钮，验证是否跳转到首页**')
         HomePage(self.driver).click_search_box()
@@ -76,7 +71,6 @@ class ProductTest(unittest.TestCase):
         ProductPage(self.driver).click_home_button()
         BasePage(self.driver).assert_true(BasePage(self.driver).is_element_present(HomePage(self.driver)._product))
 
-    @get_screen_in_case_end_or_error
     def test_go_to_cart(self):
         logging.info('**在商品详情页，点击左下角的购物车按钮，验证是否跳转到购物车页面**')
         HomePage(self.driver).click_search_box()
@@ -87,7 +81,6 @@ class ProductTest(unittest.TestCase):
         BasePage(self.driver).assert_true(ec.url_contains('emall/pages/myCart/myCart'))
         
     @data("蓝月亮茶清天然绿茶洗洁精500g")
-    @get_screen_in_case_end_or_error
     def test_special_product_info_check(self, value):
         logging.info('**在商品详情页，与接口返回进行对比，验证特价活动的商品价格是否展示正确**')
         HomePage(self.driver).click_search_box()
@@ -102,7 +95,6 @@ class ProductTest(unittest.TestCase):
 
     @data(["优惠金额验证3", 1])
     @unpack
-    @get_screen_in_case_end_or_error
     def test_product_add_to_car(self, value, num):
         # 商铺详情页点击加入购物车
         logging.info('**在商品详情页，点击加入购物车，验证购物车的商品数量是否对应增加**')
@@ -114,7 +106,6 @@ class ProductTest(unittest.TestCase):
         after = ProductPage(self.driver).get_car_num_value()
         after_expected = int(before) + int(num)
         BasePage(self.driver).assert_equal(int(after), after_expected)
-
 
 
 if __name__ == '__main__':
