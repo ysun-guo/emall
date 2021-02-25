@@ -180,6 +180,7 @@ class ProductPage(BasePage):
         for ele in self.find_special_product_promotion_price():
             part_price = self.get_element_value(ele)
             product_promotion_price = product_promotion_price + str(part_price)
+        product_promotion_price = '{:g}'.format(float(product_promotion_price))
         product_promotion_stock = self.get_element_value(self.find_special_product_promotion_stock())  # 还剩x件
         product_promotion_stock = product_promotion_stock[2:-1]
         product_promotion_tag = self.get_element_value(self.find_special_tag())
@@ -188,8 +189,9 @@ class ProductPage(BasePage):
         sku_origin_price = self.get_element_value(self.find_special_product_sku_origin_price())
         sku_origin_price = sku_origin_price[1:]
         sku_promotion_price = self.get_element_value(self.find_special_product_sku_promotion_price())
+        sku_promotion_price = '{:g}'.format(float(sku_promotion_price))
         self.assert_equal(product_origin_price, sku_origin_price)
-        self.assert_equal('{:g}'.format(float(product_promotion_price)), '{:g}'.format(float(sku_promotion_price)))
+        self.assert_equal(product_promotion_price, sku_promotion_price)
         page_special_info_list = [product_promotion_tag, product_origin_price, product_promotion_price, product_promotion_stock]
         return page_special_info_list
 
