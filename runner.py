@@ -31,7 +31,7 @@ if __name__ == '__main__':
     report_path = os.getcwd() + '/report/' + filename
     sender = 'suny@namek.com.cn'
     recevier = 'suny@namek.com.cn'
-    password = '36aywwWhDjqokua8'
+    password = 'sunY1993'
     host = 'imap.exmail.qq.com'
     subject = 'emallH5自动化结果'
     email = SMTP(recevier, password, host)
