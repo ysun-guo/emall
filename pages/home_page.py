@@ -13,6 +13,8 @@ class HomePage(BasePage):
     _advert = (By.CLASS_NAME, 'adver')
     _product = (By.CLASS_NAME, 'assort')
     _banner = (By.CLASS_NAME, 'uni-swiper-slides')
+    _saas_link = (By.CLASS_NAME, 'link-sass')
+    _saas_personal_info = (By.CLASS_NAME, 'topContent')
 
     def __init__(self, driver):
         BasePage.__init__(self, driver)
@@ -45,4 +47,5 @@ class HomePage(BasePage):
     def click_search_box(self):
         self.click_element(self._search_box)
 
-    '''业务层'''
+    def click_saas_link_img(self):
+        self.click_element(self._saas_link)
