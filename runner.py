@@ -5,12 +5,9 @@ import logging
 import time
 import unittest
 import os
-import sys
-os.chdir(sys.path[0])
-
 
 def create_my_suit():
-    test_dir = "test_case"
+    test_dir = os.getcwd() + "/test_case"
     discover = unittest.defaultTestLoader.discover(
         test_dir, pattern="*case.py", top_level_dir=None)
     return discover
