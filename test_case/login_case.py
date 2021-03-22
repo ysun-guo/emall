@@ -33,6 +33,9 @@ class LoginTest(unittest.TestCase):
         BasePage(self.driver).visit_url(ReadConf().readconf("URL", "cartURL"))
 
     def test_login_success(self):
+        '''
+        手机号、验证码成功登陆
+        '''
         logging.info('**输入正确的手机号、验证码，点击登录，验证登录成功**')
         admin_token = LoginPage(self.driver).return_saas_token_by_api()
         LoginPage(self.driver).send_phone()

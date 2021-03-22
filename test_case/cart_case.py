@@ -19,6 +19,7 @@ class CartTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         driver_path = os.getcwd() + '/chromedriver'
+        # driver_path = os.path.dirname(os.getcwd()) + '/chromedriver'
         options = BasePage(cls).device_dev_set()
         cls.driver = webdriver.Chrome(executable_path=driver_path, chrome_options=options)
         cls.driver.implicitly_wait(5)
@@ -34,6 +35,9 @@ class CartTest(unittest.TestCase):
         BasePage(self.driver).visit_url(ReadConf().readconf("URL", "cartURL"))
 
     def test_page_show(self):
+        '''
+        购物车展示元素校验
+        '''
         logging.info('**购物车页面元素校验**')
         logging.info('**左上角的商品总数与接口进行比对**')
         page_total_num = CartPage(self.driver).get_cart_total_num()
@@ -63,6 +67,9 @@ class CartTest(unittest.TestCase):
     #     pass
     #
     def test_product_detail(self):
+        '''
+        购物车商品，点击跳转到商品详情页
+        '''
         logging.info('**在购物车列表，点击第一个商品详情，验证是否跳转到商品详情页面**')
         product_name = CartPage(self.driver).get_product_name_list()
         CartPage(self.driver).click_product_name_01()
@@ -76,7 +83,13 @@ class CartTest(unittest.TestCase):
     #     pass
 
     def test_create_order(self):
+        '''
+        购物车商品，选中，点击结算，跳转到提交订单页
+        '''
         logging.info('**从购物车列表，点击结算，验证跳转到提交订单页**')
+        # 修改商品数量
+
+        CartPage(self.driver).input_product_num(1)
         CartPage(self.driver).click_product_select_icon()
         CartPage(self.driver).click_create_order_btn()
         sleep(3)
@@ -89,6 +102,9 @@ class CartTest(unittest.TestCase):
             TestCase().fail('商品模块未展示')
 
     def test_create_order_no_product(self):
+        '''
+        购物车商品，不选择，点击结算，提示
+        '''
         logging.info('**在购物车页面，不勾选商品，直接点击结算，校验是否有预期的toast**')
         CartPage(self.driver).click_create_order_btn()
         flag = BasePage(self.driver).is_show_toast()
@@ -99,7 +115,4 @@ class CartTest(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    # expected='请选择需要结算的商品'
-    suite = unittest.TestSuite()
-    suite.addTest(CartTest('test_create_order_no_product'))
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    unittest.main()

@@ -40,6 +40,9 @@ class PersoanlTest(unittest.TestCase):
                 "personalURL"))
 
     def test_page_show_check(self):
+        '''
+        我的页面元素展示
+        '''
         logging.info('**验证我的页面的元素是否已经展示**')
         res = BasePage(
             self.driver).is_element_present(
@@ -76,6 +79,9 @@ class PersoanlTest(unittest.TestCase):
         BasePage(self.driver).check_exist_in_string('我的', self.driver.title)
 
     def test_all_order_link(self):
+        '''
+        点击全部订单跳转
+        '''
         logging.info("**我的页面元素是否展示**")
         PersonalPage(self.driver).click_all_order_link()
         BasePage(self.driver).check_exist_in_string('我的订单', self.driver.title)
@@ -113,9 +119,7 @@ class PersoanlTest(unittest.TestCase):
     @data(1, 2, 3, 4, 5)
     def test_state_order_link(self, n):
         '''
-        n:我的页面第几个订单tab
-        m：1快递配送  2自提
-        x：我的订单列表第几个状态的tab
+        点击待支付、待自提等跳转到对应的订单列表中
         '''
         logging.info("**我的订单模块点击进入不同tab页**")
         expected_deliver_class_name = 'switchLeft'

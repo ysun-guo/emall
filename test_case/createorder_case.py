@@ -38,7 +38,10 @@ class CreateOrderTest(unittest.TestCase):
     @data([product_name, 1])
     @unpack
     def test_create_order_check(self, product_name, num):
-        logging.info('**在提交订单页，点击提交订单，验证是否跳转到支付页面**')
+        '''
+        在支付页面元素校验
+        '''
+        logging.info('**在商品详情页，点击提交订单，验证是否跳转到提交订单页面**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box(product_name)
         SearchPage(self.driver).click_search_product_01()
@@ -55,6 +58,9 @@ class CreateOrderTest(unittest.TestCase):
     @data([product_name, 1])
     @unpack
     def test_create_order_info_check(self, product_name, num):
+        '''
+        提交订单页面元素检查
+        '''
         logging.info('**从商品详情页，点击立即购买，验证是否跳转到提交订单页**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box(product_name)

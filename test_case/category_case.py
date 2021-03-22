@@ -33,6 +33,9 @@ class CategoryTest(unittest.TestCase):
         BasePage(self.driver).visit_url(ReadConf().readconf("URL", "categoryURL"))
 
     def test_page_show_check(self):
+        '''
+        商品分类页面元素展示
+        '''
         logging.info('**验证分类页面的元素是否已经展示**')
         res = BasePage(self.driver).is_element_present(CategoryPage(self.driver)._search_box)
         if res is True:
@@ -53,6 +56,9 @@ class CategoryTest(unittest.TestCase):
         BasePage(self.driver).check_exist_in_string('分类', self.driver.title)
 
     def test_click_cate(self):
+        '''
+        分类点击，切换选中
+        '''
         logging.info('**分类是否可点击**')
         CategoryPage(self.driver).click_cate()
         res = BasePage(self.driver).is_element_present(CategoryPage(self.driver)._child_cate_region)
@@ -63,6 +69,9 @@ class CategoryTest(unittest.TestCase):
 
     @data("优惠金额验证3")
     def test_click_search_box(self, value):
+        '''
+        商品分类页面搜索框
+        '''
         logging.info('**搜索框是否可用**')
         CategoryPage(self.driver).click_search_box()
         res = BasePage(self.driver).is_element_present(SearchPage(self.driver)._cancel_button)

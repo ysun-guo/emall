@@ -131,7 +131,8 @@ class CartPage(BasePage):
 
     # 输入商品数量
     def input_product_num(self, num):
-        self.sendkey_element(self.get_product_num_input_box(), num)
+        BasePage(self.driver).clear_element(self.get_product_num_input_box()[0])
+        self.sendkey_element(self.get_product_num_input_box()[0], num)
 
     def click_del_popup_sure_btn(self):
         self.click_element(self._del_popup_sure_btn)

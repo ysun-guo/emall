@@ -17,7 +17,7 @@ class HomeTest(unittest.TestCase):
         cls.driver = webdriver.Chrome(executable_path=driver_path, chrome_options=options)
         cls.driver.implicitly_wait(5)
         BasePage(cls.driver).visit_url()
-        BasePage(cls.driver).login_by_js(False)
+        BasePage(cls.driver).login_by_js(True)
 
     @classmethod
     def tearDownClass(cls):
@@ -27,6 +27,9 @@ class HomeTest(unittest.TestCase):
         BasePage(self.driver).visit_url()
 
     def test_home_check(self):
+        '''
+        首页的元素检查
+        '''
         logging.info('**验证首页的橱窗、广告模板等是否已经展示**')
         res = BasePage(self.driver).is_element_present(HomePage(self.driver)._banner)
         if res is True:
@@ -55,6 +58,9 @@ class HomeTest(unittest.TestCase):
             TestCase().fail('搜索框未展示')
 
     def test_goto_saas(self):
+        '''
+        跳转到saas页面
+        '''
         HomePage(self.driver).click_saas_link_img()
         res = BasePage(self.driver).is_element_present(HomePage(self.driver)._saas_personal_info)
         if res is True:

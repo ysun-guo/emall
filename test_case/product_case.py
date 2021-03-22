@@ -34,6 +34,9 @@ class ProductTest(unittest.TestCase):
         BasePage(self.driver).visit_url()
 
     def test_sku_add_to_car(self, value=2):
+        '''
+        从商品详情的规格弹窗，加入购物车
+        '''
         logging.info('**在商品详情页，打开规格弹窗，点击加入购物车，验证购物车商品数量是否增加**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box()
@@ -45,6 +48,9 @@ class ProductTest(unittest.TestCase):
         BasePage(self.driver).assert_equal(int(after), after_expected)
 
     def test_product_buy(self, value=2):
+        '''
+        在商品详情页，点击立即购买
+        '''
         logging.info('**在商品详情页，点击立即购买，验证是否跳转到提交订单页**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box()
@@ -54,6 +60,9 @@ class ProductTest(unittest.TestCase):
         BasePage(self.driver).assert_true(ec.url_contains('/pages/order/createOrder'))
 
     def test_sku_buy(self, value=1):
+        '''
+        从商品详情页的规格弹窗，点击立即购买
+        '''
         logging.info('**在商品详情页，打开规格弹窗，点击立即购买，验证是否跳转到提交订单页**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box()
@@ -64,6 +73,9 @@ class ProductTest(unittest.TestCase):
         BasePage(self.driver).assert_true(ec.url_contains('/pages/order/createOrder'))
 
     def test_return_home(self):
+        '''
+        商品详情页的返回主页按钮
+        '''
         logging.info('**在商品详情页，点击左下角的首页按钮，验证是否跳转到首页**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box()
@@ -72,6 +84,9 @@ class ProductTest(unittest.TestCase):
         BasePage(self.driver).assert_true(BasePage(self.driver).is_element_present(HomePage(self.driver)._product))
 
     def test_go_to_cart(self):
+        '''
+        商品详情页的跳转到购物车
+        '''
         logging.info('**在商品详情页，点击左下角的购物车按钮，验证是否跳转到购物车页面**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box()
@@ -82,6 +97,9 @@ class ProductTest(unittest.TestCase):
         
     @data("蓝月亮茶清天然绿茶洗洁精500g")
     def test_special_product_info_check(self, value):
+        '''
+        秒杀活动的商品详情元素校验
+        '''
         logging.info('**在商品详情页，与接口返回进行对比，验证特价活动的商品价格是否展示正确**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box(value)
@@ -96,7 +114,9 @@ class ProductTest(unittest.TestCase):
     @data(["优惠金额验证3", 1])
     @unpack
     def test_product_add_to_car(self, value, num):
-        # 商铺详情页点击加入购物车
+        '''
+        商品详情页，点击加入购物车
+        '''
         logging.info('**在商品详情页，点击加入购物车，验证购物车的商品数量是否对应增加**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box(value)
