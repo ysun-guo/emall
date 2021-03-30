@@ -6,6 +6,7 @@ import time
 import unittest
 import os
 
+
 def create_my_suit():
     test_dir = os.getcwd() + "/test_case"
     discover = unittest.defaultTestLoader.discover(

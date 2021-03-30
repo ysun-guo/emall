@@ -11,6 +11,8 @@ from selenium.webdriver.support import expected_conditions as ec
 import logging
 from time import sleep
 import os
+from unittest import TestCase
+from selenium.common import exceptions
 
 
 @ddt
@@ -20,13 +22,9 @@ class CreateOrderTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        driver_path = os.getcwd() + '/chromedriver'
-        # driver_path = 'chromedriver'
-        options = BasePage(cls).device_dev_set()
-        cls.driver = webdriver.Chrome(executable_path=driver_path, chrome_options=options)
-        cls.driver.implicitly_wait(5)
-        BasePage(cls.driver).visit_url()
-        BasePage(cls.driver).login_by_js(True)
+        return_list = BasePage(cls).class_setup_set(True)
+        cls.driver = return_list[0]
+        cls.token = return_list[1]
 
     @classmethod
     def tearDownClass(cls):
@@ -54,6 +52,14 @@ class CreateOrderTest(unittest.TestCase):
         logging.info("提交订单按钮已展示")
         BasePage(self.driver).assert_true(BasePage(self.driver).is_element_present(CreateOrderPage(self.driver)._pay_fee_form))
         logging.info("价格区域已展示")
+        # 点击立即支付按钮
+        CreateOrderPage(self.driver).click_pay_btn()
+        # 断言有没有报错
+        try:
+            toast_txt = BasePage(self.driver).get_toast_text()
+            TestCase().fail("支付报错：" + toast_txt)
+        except exceptions.TimeoutException:
+            BasePage(self.driver).assert_true(ec.url_contains('prepay_id=wx'))
 
     @data([product_name, 1])
     @unpack

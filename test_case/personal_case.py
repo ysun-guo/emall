@@ -18,15 +18,9 @@ class PersoanlTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        driver_path = os.getcwd() + '/chromedriver'
-        # driver_path = os.path.dirname(os.getcwd()) + '/chromedriver'
-        options = BasePage(cls).device_dev_set()
-        cls.driver = webdriver.Chrome(
-            executable_path=driver_path,
-            chrome_options=options)
-        cls.driver.implicitly_wait(5)
-        BasePage(cls.driver).visit_url()
-        BasePage(cls.driver).login_by_js(True)
+        return_list = BasePage(cls).class_setup_set(True)
+        cls.driver = return_list[0]
+        cls.token = return_list[1]
 
     @classmethod
     def tearDownClass(cls):

@@ -14,6 +14,7 @@ class CreateOrderPage(BasePage):
     _pay_btn = (By.CLASS_NAME, 'payBtn')
     _pay_fee_form = (By.CLASS_NAME, 'payConent')
 
+
     def get_addr_form(self):
         self.find_element(self._addr_form)
 
@@ -34,3 +35,6 @@ class CreateOrderPage(BasePage):
 
     def get_pay_fee_form(self):
         self.find_element(self._pay_fee_form)
+
+    def click_pay_btn(self):
+        self.click_element(self._pay_btn)

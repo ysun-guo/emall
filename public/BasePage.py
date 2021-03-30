@@ -12,6 +12,7 @@ from selenium.common import exceptions
 import hashlib
 import requests
 from selenium import webdriver
+import os
 
 
 class BasePage:
@@ -110,6 +111,18 @@ class BasePage:
             token = ReturnToken().return_visit_token()
             self.driver.execute_script("window.localStorage.setItem('namek_emall@"+tenant_code+"@token',JSON.stringify('" + token + "'))")
         return token
+
+    def class_setup_set(cls, status, flag = 1):
+        if flag == 1:
+            driver_path = os.getcwd() + '/chromedriver'
+        else:
+            driver_path = os.path.dirname(os.getcwd()) + '/chromedriver'
+        options = BasePage(cls).device_dev_set()
+        cls.driver = webdriver.Chrome(executable_path=driver_path, options=options)
+        cls.driver.implicitly_wait(5)
+        BasePage(cls.driver).visit_url()
+        cls.token = BasePage(cls.driver).login_by_js(status)
+        return cls.driver, cls.token
 
     '''元素操作封装 '''
     # 点击元素

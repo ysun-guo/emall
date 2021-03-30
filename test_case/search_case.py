@@ -16,13 +16,9 @@ class SearchTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        driver_path = os.getcwd() + '/chromedriver'
-        # driver_path = 'chromedriver'
-        options = BasePage(cls).device_dev_set()
-        cls.driver = webdriver.Chrome(executable_path=driver_path, chrome_options=options)
-        BasePage(cls.driver).visit_url()
-        BasePage(cls.driver).login_by_js(False)
-        cls.driver.implicitly_wait(5)
+        return_list = BasePage(cls).class_setup_set(False)
+        cls.driver = return_list[0]
+        cls.token = return_list[1]
 
     @classmethod
     def tearDownClass(cls):

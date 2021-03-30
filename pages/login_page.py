@@ -85,7 +85,7 @@ class LoginPage(BasePage):
         while True:
             end_time = datetime.datetime.utcnow()
             tc = end_time - start_time
-            if code is None and tc.seconds < 30:
+            if code is None and tc.seconds < 50:
                 code = self.get_code_by_api(saas_token, req_time)
             else:
                 break

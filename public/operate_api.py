@@ -11,7 +11,6 @@ class ReturnToken():
         url = host + api
         data = {'tenantID': tenant_id, 'belongTenantId': tenant_id}  # 请求数据
         req = requests.post(url, data)  # 发post请求
-        print(req)
         text = req.json()  # 返回string,json串
         return text['body']['token']
 
@@ -27,7 +26,6 @@ class ReturnToken():
         }
         req = requests.post(url, json=body)
         text = req.json()
-        print(text)
         info_list = []
         info_list.append(text['body']['memberId'])
         info_list.append(text['body']['token'])

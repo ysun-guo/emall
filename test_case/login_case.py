@@ -11,19 +11,16 @@ import logging
 from selenium.common import exceptions
 import os
 from unittest import TestCase
+import datetime
 
 
 class LoginTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        driver_path = os.getcwd() + '/chromedriver'
-        # driver_path = 'chromedriver'
-        options = BasePage(cls).device_dev_set()
-        cls.driver = webdriver.Chrome(executable_path=driver_path, chrome_options=options)
-        cls.driver.implicitly_wait(5)
-        BasePage(cls.driver).visit_url()
-        BasePage(cls.driver).login_by_js(False)
+        return_list = BasePage(cls).class_setup_set(False)
+        cls.driver = return_list[0]
+        cls.token = return_list[1]
 
     @classmethod
     def tearDownClass(cls):
@@ -40,7 +37,10 @@ class LoginTest(unittest.TestCase):
         admin_token = LoginPage(self.driver).return_saas_token_by_api()
         LoginPage(self.driver).send_phone()
         start_time = LoginPage(self.driver).click_get_code_btn()
+        logging.info(start_time)
         code = LoginPage(self).get_code(admin_token, start_time)
+        get_code_time = datetime.datetime.now()
+        logging.info(get_code_time)
         if code is not None:
             LoginPage(self.driver).send_pwd(code)
             LoginPage(self.driver).click_submit_btn()
