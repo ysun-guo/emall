@@ -12,6 +12,14 @@ class PersonalPage(BasePage):
     _saas_link = (By.CLASS_NAME, 'link-sass')
     _other_item = (By.CLASS_NAME, 'my-other-item')
     _my_order_link = (By.CLASS_NAME, 'all-order')
+    _balance = (By.XPATH, '//uni-view[@class="my-other-info"]/uni-view[1]')
+    _points = (By.XPATH, '//uni-view[@class="my-other-info"]/uni-view[2]')
+    _coupons = (By.XPATH, '//uni-view[@class="my-other-info"]/uni-view[3]')
+    _personal_info_link = (By.XPATH, '//uni-view[text()="个人资料"]/../..')
+    _deliver_address_link = (By.XPATH, '//uni-view[text()="收货地址"]/../..')
+    _account_link = (By.XPATH, '//uni-view[text()="账号与安全"]/../..')
+    _copy_code_btn = (By.CLASS_NAME, 'copy-code')
+
 
     def __init__(self, driver):
         BasePage.__init__(self, driver)
@@ -30,3 +38,23 @@ class PersonalPage(BasePage):
         """
         self.click_element((By.XPATH, '//uni-view[@class="order-item"][position()=' + str(n) +']'))
 
+    def click_balance(self):
+        self.click_element(self._balance)
+
+    def click_points(self):
+        self.click_element(self._points)
+
+    def click_coupons(self):
+        self.click_element(self._coupons)
+
+    def click_personal_info_link(self):
+        self.click_element(self._personal_info_link)
+
+    def click_deliver_address_link(self):
+        self.click_element(self._deliver_address_link)
+
+    def click_account_link(self):
+        self.click_element(self._account_link)
+
+    def click_copy_code_btn(self):
+        self.click_element(self._copy_code_btn)

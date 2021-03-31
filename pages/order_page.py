@@ -2,7 +2,6 @@
 
 from public.BasePage import BasePage
 from selenium.webdriver.common.by import By
-import logging
 
 
 class OrderPage(BasePage):

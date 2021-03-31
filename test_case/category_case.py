@@ -3,7 +3,7 @@ from selenium import webdriver
 import unittest
 from public.BasePage import BasePage
 from pages.category_page import CategoryPage
-import logging
+
 import os
 from public.readConf import ReadConf
 from selenium.webdriver.support import expected_conditions as ec
@@ -32,20 +32,20 @@ class CategoryTest(unittest.TestCase):
         '''
         商品分类页面元素展示
         '''
-        logging.info('**验证分类页面的元素是否已经展示**')
+        print('**验证分类页面的元素是否已经展示**')
         res = BasePage(self.driver).is_element_present(CategoryPage(self.driver)._search_box)
         if res is True:
-            logging.info('搜索框展示在页面上')
+            print('搜索框展示在页面上')
         else:
-            logging.warning('搜索框未出现在页面上')
+            print('搜索框未出现在页面上')
         res = BasePage(self.driver).is_element_present(CategoryPage(self.driver)._cate)
         if res is True:
-            logging.info('左侧前端分类展示在页面上')
+            print('左侧前端分类展示在页面上')
         else:
             TestCase().fail('左侧前端分类未出现在页面上')
         res = BasePage(self.driver).is_element_present(CategoryPage(self.driver)._child_cate_region)
         if res is True:
-            logging.info('右侧商品分类展示在页面上')
+            print('右侧商品分类展示在页面上')
         else:
             TestCase().fail('右侧商品分类未出现在页面上')
         print(self.driver.title)
@@ -55,29 +55,29 @@ class CategoryTest(unittest.TestCase):
         '''
         分类点击，切换选中
         '''
-        logging.info('**分类是否可点击**')
+        print('**分类是否可点击**')
         CategoryPage(self.driver).click_cate()
         res = BasePage(self.driver).is_element_present(CategoryPage(self.driver)._child_cate_region)
         if res is True:
-            logging.info('右侧商品分类展示在页面上')
+            print('右侧商品分类展示在页面上')
         else:
             TestCase().fail('右侧商品分类未出现在页面上')
 
-    @data("优惠金额验证3")
+    @data("优惠金额验证")
     def test_click_search_box(self, value):
         '''
         商品分类页面搜索框
         '''
-        logging.info('**搜索框是否可用**')
+        print('**搜索框是否可用**')
         CategoryPage(self.driver).click_search_box()
         res = BasePage(self.driver).is_element_present(SearchPage(self.driver)._cancel_button)
         if res is True:
-            logging.info('搜索取消按钮展示在页面上')
+            print('搜索取消按钮展示在页面上')
         else:
-            logging.warning('搜索取消按钮未出现在页面上')
+            print('搜索取消按钮未出现在页面上')
         res = BasePage(self.driver).is_element_present(SearchPage(self.driver)._search_box)
         if res is True:
-            logging.info('搜索输入框展示在页面上')
+            print('搜索输入框展示在页面上')
         else:
             TestCase().fail('搜索输入框未出现在页面上')
         SearchPage(self.driver).send_key_search_box(value)

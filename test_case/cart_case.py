@@ -9,7 +9,7 @@ from pages.createorder_page import CreateOrderPage
 from public.readConf import ReadConf
 from selenium.webdriver.support import expected_conditions as ec
 from time import sleep
-import logging
+
 from unittest import TestCase
 import os
 
@@ -33,12 +33,12 @@ class CartTest(unittest.TestCase):
         '''
         购物车展示元素校验
         '''
-        logging.info('**购物车页面元素校验**')
-        logging.info('**左上角的商品总数与接口进行比对**')
+        print('**购物车页面元素校验**')
+        print('**左上角的商品总数与接口进行比对**')
         page_total_num = CartPage(self.driver).get_cart_total_num()
         api_total_num = CartApi.get_cart_total_num_api(self.token)
         BasePage(self.driver).assert_equal(int(page_total_num), api_total_num)
-        logging.info('**购物车列表的商品名称和商品数量与接口进行比对**')
+        print('**购物车列表的商品名称和商品数量与接口进行比对**')
         page_product_name_list = CartPage(self.driver).get_product_name_list()
         page_product_num_list = CartPage(self.driver).get_product_num_text()
         page_product_num_list = [int(i) for i in page_product_num_list]  # 全部转成int类型
@@ -48,8 +48,8 @@ class CartTest(unittest.TestCase):
         for api_product_infos in api_product_info_list:
             api_product_info.append(api_product_infos[1:])
         api_product_info = list(map(list, zip(*api_product_info)))  # 行列转换
-        logging.info(page_product_info)
-        logging.info(api_product_info)
+        print(page_product_info)
+        print(api_product_info)
         TestCase().assertListEqual(page_product_info, api_product_info)
 
     # def test_modify_num(self):
@@ -65,7 +65,7 @@ class CartTest(unittest.TestCase):
         '''
         购物车商品，点击跳转到商品详情页
         '''
-        logging.info('**在购物车列表，点击第一个商品详情，验证是否跳转到商品详情页面**')
+        print('**在购物车列表，点击第一个商品详情，验证是否跳转到商品详情页面**')
         product_name = CartPage(self.driver).get_product_name_list()
         CartPage(self.driver).click_product_name_01()
         sleep(2)
@@ -81,7 +81,7 @@ class CartTest(unittest.TestCase):
         '''
         购物车商品，选中，点击结算，跳转到提交订单页
         '''
-        logging.info('**从购物车列表，点击结算，验证跳转到提交订单页**')
+        print('**从购物车列表，点击结算，验证跳转到提交订单页**')
         # 修改商品数量
 
         CartPage(self.driver).input_product_num(1)
@@ -92,7 +92,7 @@ class CartTest(unittest.TestCase):
         ec.url_contains('emall/pages/order/createOrder')
         res = BasePage(self.driver).is_element_present(CreateOrderPage(self)._product_list_form)
         if res is True:
-            logging.info('商品模块已展示')
+            print('商品模块已展示')
         else:
             TestCase().fail('商品模块未展示')
 
@@ -100,7 +100,7 @@ class CartTest(unittest.TestCase):
         '''
         购物车商品，不选择，点击结算，提示
         '''
-        logging.info('**在购物车页面，不勾选商品，直接点击结算，校验是否有预期的toast**')
+        print('**在购物车页面，不勾选商品，直接点击结算，校验是否有预期的toast**')
         CartPage(self.driver).click_create_order_btn()
         flag = BasePage(self.driver).is_show_toast()
         BasePage(self.driver).assert_equal(flag, True)

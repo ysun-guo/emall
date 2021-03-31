@@ -1,7 +1,7 @@
 # coding=utf-8
 from selenium import webdriver
 import unittest
-import logging
+
 from public.BasePage import BasePage
 from pages.home_page import HomePage
 from pages.search_page import SearchPage
@@ -32,7 +32,7 @@ class ProductTest(unittest.TestCase):
         '''
         从商品详情的规格弹窗，加入购物车
         '''
-        logging.info('**在商品详情页，打开规格弹窗，点击加入购物车，验证购物车商品数量是否增加**')
+        print('**在商品详情页，打开规格弹窗，点击加入购物车，验证购物车商品数量是否增加**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box()
         SearchPage(self.driver).click_search_product_01()
@@ -46,7 +46,7 @@ class ProductTest(unittest.TestCase):
         '''
         在商品详情页，点击立即购买
         '''
-        logging.info('**在商品详情页，点击立即购买，验证是否跳转到提交订单页**')
+        print('**在商品详情页，点击立即购买，验证是否跳转到提交订单页**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box()
         SearchPage(self.driver).click_search_product_01()
@@ -58,7 +58,7 @@ class ProductTest(unittest.TestCase):
         '''
         从商品详情页的规格弹窗，点击立即购买
         '''
-        logging.info('**在商品详情页，打开规格弹窗，点击立即购买，验证是否跳转到提交订单页**')
+        print('**在商品详情页，打开规格弹窗，点击立即购买，验证是否跳转到提交订单页**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box()
         SearchPage(self.driver).click_search_product_01()
@@ -71,7 +71,7 @@ class ProductTest(unittest.TestCase):
         '''
         商品详情页的返回主页按钮
         '''
-        logging.info('**在商品详情页，点击左下角的首页按钮，验证是否跳转到首页**')
+        print('**在商品详情页，点击左下角的首页按钮，验证是否跳转到首页**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box()
         SearchPage(self.driver).click_search_product_01()
@@ -82,7 +82,7 @@ class ProductTest(unittest.TestCase):
         '''
         商品详情页的跳转到购物车
         '''
-        logging.info('**在商品详情页，点击左下角的购物车按钮，验证是否跳转到购物车页面**')
+        print('**在商品详情页，点击左下角的购物车按钮，验证是否跳转到购物车页面**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box()
         SearchPage(self.driver).click_search_product_01()
@@ -95,24 +95,24 @@ class ProductTest(unittest.TestCase):
         '''
         秒杀活动的商品详情元素校验
         '''
-        logging.info('**在商品详情页，与接口返回进行对比，验证特价活动的商品价格是否展示正确**')
+        print('**在商品详情页，与接口返回进行对比，验证特价活动的商品价格是否展示正确**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box(value)
         SearchPage(self.driver).click_search_product_01()
         product_id = ProductPage(self.driver).get_product_id_from_url()
         page_special_info_list = ProductPage(self.driver).get_page_special_price_info()
-        logging.info(page_special_info_list)
+        print(page_special_info_list)
         api_special_info_list = ProductPage(self.driver).get_api_special_price_info(product_id=product_id, token=self.token)
-        logging.info(api_special_info_list)
+        print(api_special_info_list)
         self.assertListEqual(page_special_info_list, api_special_info_list)
 
-    @data(["优惠金额验证3", 1])
+    @data(["优惠金额验证", 1])
     @unpack
     def test_product_add_to_car(self, value, num):
         '''
         商品详情页，点击加入购物车
         '''
-        logging.info('**在商品详情页，点击加入购物车，验证购物车的商品数量是否对应增加**')
+        print('**在商品详情页，点击加入购物车，验证购物车的商品数量是否对应增加**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box(value)
         SearchPage(self.driver).click_search_product_01()

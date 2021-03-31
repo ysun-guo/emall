@@ -5,8 +5,6 @@ from selenium.webdriver.common.by import By
 from public.readConf import ReadConf
 import requests
 import datetime
-from selenium.webdriver.support import expected_conditions as ec
-import logging
 
 
 class LoginPage(BasePage):
@@ -53,8 +51,10 @@ class LoginPage(BasePage):
         host = ReadConf().readconf("HOST", "admin_host")
         tenant_id = ReadConf().readconf("Tenant", "tenant_id")
         phone = ReadConf().readconf("PhoneNumber", "phone")
-        start_time = datetime.datetime.strftime((req_time + datetime.timedelta(minutes=-1)), '%Y-%m-%d %H:%M:%S')
-        end_time = datetime.datetime.strftime(req_time, '%Y-%m-%d %H:%M:%S')
+        start_time = datetime.datetime.strftime((req_time + datetime.timedelta(seconds=-5)), '%Y-%m-%d %H:%M:%S')
+        end_time = datetime.datetime.strftime((req_time + datetime.timedelta(seconds=65)), '%Y-%m-%d %H:%M:%S')
+        print(start_time)
+        print(end_time)
         api = '/api/v1/statistics/sms/list'
         url = host + api
         header = {
@@ -71,6 +71,7 @@ class LoginPage(BasePage):
             "notifyCode": "vcode"
         }
         text = requests.get(url, headers=header, params=body)
+
         x = text.json()["body"]["data"]
         code = None
         for i in x:
@@ -79,13 +80,12 @@ class LoginPage(BasePage):
         return code
 
     def get_code(self, saas_token, req_time):
-        code = self.get_code_by_api(saas_token, req_time)
-        logging.info(code)
+        code = None
         start_time = datetime.datetime.utcnow()
         while True:
             end_time = datetime.datetime.utcnow()
             tc = end_time - start_time
-            if code is None and tc.seconds < 50:
+            if code is None and tc.seconds < 60:
                 code = self.get_code_by_api(saas_token, req_time)
             else:
                 break

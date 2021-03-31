@@ -1,7 +1,6 @@
 # coding=utf-8
 
 from public.BasePage import BasePage
-import logging
 from selenium.webdriver.common.by import By
 import random
 

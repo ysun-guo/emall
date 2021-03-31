@@ -3,14 +3,10 @@
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from unittest import TestCase
-from selenium.webdriver.chrome.options import Options
 from public.operate_api import ReturnToken
 from public.readConf import ReadConf
-import logging
 from selenium.webdriver.common.by import By
 from selenium.common import exceptions
-import hashlib
-import requests
 from selenium import webdriver
 import os
 
@@ -39,7 +35,7 @@ class BasePage:
     def is_show_toast(self):
         loc = (By.TAG_NAME, "uni-toast")
         flag = self.is_element_present(loc)
-        logging.info("是否有toast提示：" + str(flag))
+        print("是否有toast提示：" + str(flag))
         return flag
 
     def is_show_404(self):
@@ -64,32 +60,15 @@ class BasePage:
             url = url
         self.driver.get(url)
 
-    @staticmethod
-    def create_md5(str1):
-        md5 = hashlib.md5()
-        md5.update(str1.encode('utf-8'))
-        str1 = md5.hexdigest()
-        return str1
 
-    def return_saas_token_by_api(self):
-        host = ReadConf().readconf('HOST', 'admin_host')
-        api = '/api/v1/account/login'
-        url = host+api
-        user = ReadConf().readconf('AdminUser', 'adminuser')
-        pwd = ReadConf().readconf('AdminUser', 'adminpwd')
-        pwd = self.create_md5(pwd)
-        body = {'tenantCode': 'namek', 'account': user, 'password': pwd}
-        text = requests.post(url, data=body)
-        saas_token = text.json()['body']['token']
-        logging.info(saas_token)
-        return saas_token
+
 
     # 设置手机模式
     @staticmethod
     def device_dev_set():
-        mobile_emulation = {"deviceName": "iPhone 8"}
+        mobile_emulation = {"deviceName": "iPhone X"}
         options = webdriver.ChromeOptions()
-        options.add_argument('headless')
+        # options.add_argument('headless')
         options.add_argument('disable-dev-shm-usage')
         options.add_argument('--no-sandbox')
         options.add_experimental_option("mobileEmulation", mobile_emulation)

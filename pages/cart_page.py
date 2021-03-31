@@ -2,7 +2,6 @@
 
 from public.BasePage import BasePage
 from unittest import TestCase
-import logging
 from selenium.webdriver.common.by import By
 import requests
 from public.readConf import ReadConf
@@ -184,10 +183,8 @@ class CartApi(BasePage):
             "token": token,
             "tenantId": tenant_id
         }
-        logging.info(token)
         req = requests.get(url, headers=header)
         text = req.json()
-        logging.info(text)
         return text["body"]
 
 
@@ -200,7 +197,7 @@ class CartCheck(CartPage, CartApi):
             self.get_cart_edit_delete_btn()
         except Exception as e:
             print(type(e), e)
-            logging.warning("删除按钮未出现")
+            print("删除按钮未出现")
         self.click_select_all_btn()
         self.click_cart_edit_delete_btn()
         self.click_del_popup_sure_btn()

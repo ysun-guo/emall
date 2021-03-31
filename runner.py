@@ -1,7 +1,6 @@
 # coding=utf-8
 from TestRunner.HTMLTestRunner import SMTP
 from TestRunner.HTMLTestRunner import HTMLTestRunner
-import logging
 import time
 import unittest
 import os
@@ -24,7 +23,7 @@ if __name__ == '__main__':
     )
     runner.run(my_suit)
     f.close()
-    logging.info("运行结束！！开始邮件发送")
+    print("运行结束！！开始邮件发送")
     # 发送邮件
     report_path = os.getcwd() + '/report/' + filename
     sender = 'suny@namek.com.cn'

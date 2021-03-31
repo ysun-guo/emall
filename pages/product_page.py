@@ -3,7 +3,6 @@
 from public.BasePage import BasePage
 from selenium.webdriver.common.by import By
 from time import sleep
-import logging
 import random
 from public.readConf import ReadConf
 import requests
@@ -116,7 +115,7 @@ class ProductPage(BasePage):
     '''元素操作层'''
 
     def select_sku(self):
-        logging.info("返回一个list，len(list)代表有几个规格类型，list[n]的值代表第n个规格类型有几个规格值")
+        print("返回一个list，len(list)代表有几个规格类型，list[n]的值代表第n个规格类型有几个规格值")
         _sku = (By.XPATH, '//uni-view[@class="product-skus"]/uni-view')
         count = len(self.find_elements(_sku))
         for j in range(1, count+1):
@@ -174,7 +173,7 @@ class ProductPage(BasePage):
         sleep(2)
 
     def get_page_special_price_info(self):
-        logging.info('返回一个list：活动tag、原价、活动价、活动库存')
+        print('返回一个list：活动tag、原价、活动价、活动库存')
         product_origin_price = self.get_element_value(self.find_special_product_origin_price())
         product_promotion_price = ''
         for ele in self.find_special_product_promotion_price():

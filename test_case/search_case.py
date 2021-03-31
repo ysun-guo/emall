@@ -7,7 +7,7 @@ from pages.search_page import SearchPage
 from selenium.webdriver.support import expected_conditions as ec
 from selenium import webdriver
 from time import sleep
-import logging
+
 import os
 
 
@@ -32,20 +32,20 @@ class SearchTest(unittest.TestCase):
         '''
         输入商品名称进行搜索
         '''
-        logging.info('**输入商品名称搜索，验证是否有搜索到相关商品**')
+        print('**输入商品名称搜索，验证是否有搜索到相关商品**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).send_key_search_box(value)
         sleep(2)
         for productName in SearchPage(self.driver).get_product_names():
             name = SearchPage(self.driver).get_element_value(productName)
-            logging.info("商品名称:" + name)
+            print("商品名称:" + name)
             BasePage(self.driver).check_exist_in_string(value, name)
 
     def test_search_cancel(self):
         '''
         在搜索页，点击取消按钮，返回到上一页
         '''
-        logging.info('**在搜索页面点击取消，验证是否会返回到首页**')
+        print('**在搜索页面点击取消，验证是否会返回到首页**')
         HomePage(self.driver).click_search_box()
         SearchPage(self.driver).click_cancel_button()
         sleep(2)

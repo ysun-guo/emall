@@ -5,7 +5,7 @@ import unittest
 import requests
 from public.BasePage import BasePage
 from public.readConf import ReadConf
-import logging
+
 import datetime
 
 class Tests(unittest.TestCase):
