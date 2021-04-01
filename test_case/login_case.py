@@ -19,7 +19,7 @@ class LoginTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        return_list = BasePage(cls).class_setup_set(False, 0)
+        return_list = BasePage(cls).class_setup_set(False)
         cls.driver = return_list[0]
         cls.token = return_list[1]
 

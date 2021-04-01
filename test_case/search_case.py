@@ -27,7 +27,7 @@ class SearchTest(unittest.TestCase):
     def setUp(self):
         BasePage(self.driver).visit_url()
 
-    @data("优惠金额验证3")
+    @data("优惠金额验证")
     def test_search(self, value):
         '''
         输入商品名称进行搜索
