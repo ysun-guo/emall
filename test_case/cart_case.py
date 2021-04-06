@@ -9,7 +9,6 @@ from pages.createorder_page import CreateOrderPage
 from public.readConf import ReadConf
 from selenium.webdriver.support import expected_conditions as ec
 from time import sleep
-
 from unittest import TestCase
 import os
 
@@ -66,11 +65,12 @@ class CartTest(unittest.TestCase):
         购物车商品，点击跳转到商品详情页
         '''
         print('**在购物车列表，点击第一个商品详情，验证是否跳转到商品详情页面**')
+        i = 3
         product_name = CartPage(self.driver).get_product_name_list()
-        CartPage(self.driver).click_product_name_01()
+        CartPage(self.driver).click_product_name_i(i)
         sleep(2)
         product_detail_name = ProductPage(self.driver).get_product_name()
-        BasePage(self.driver).assert_equal(product_name[0], product_detail_name)
+        BasePage(self.driver).assert_equal(product_name[i-1], product_detail_name)
         ec.url_contains("pages/product/detail?id")
         ec.title_is("商品详情")
     #
@@ -83,9 +83,10 @@ class CartTest(unittest.TestCase):
         '''
         print('**从购物车列表，点击结算，验证跳转到提交订单页**')
         # 修改商品数量
-
-        CartPage(self.driver).input_product_num(1)
-        CartPage(self.driver).click_product_select_icon()
+        i = 3
+        CartPage(self.driver).input_product_num(i, 1)
+        sleep(5)
+        CartPage(self.driver).click_product_select_icon_i(i)
         CartPage(self.driver).click_create_order_btn()
         sleep(3)
         ec.title_contains('提交订单')

@@ -20,9 +20,9 @@ class CartPage(BasePage):
     # 批量操作的删除按钮
     _cart_edit_delete_btn = (By.CLASS_NAME, 'complate-btn')
     # 数量-按钮
-    _product_num_del = (By.XPATH, '//uni-view[@class="product-del"]')
+    # _product_num_del = (By.XPATH, '//uni-view[@class="product-del"]')
     # 数量+按钮
-    _product_num_add = (By.XPATH, '//uni-view[@class="product-add"]')
+    # _product_num_add = (By.XPATH, '//uni-view[@class="product-add"]')
     # 数量输入框
     _product_num_input = (By.XPATH, '//input[@class="uni-input-input"]')
     # 多规格商品的规格按钮
@@ -49,7 +49,7 @@ class CartPage(BasePage):
         By.CLASS_NAME,
         'uni-modal__btn uni-modal__btn_primary')
     # 商品前的选择按钮
-    _product_select_icon = (By.XPATH, '//uni-view[@class="select-icons"]')
+    # _product_select_icon = (By.XPATH, '//uni-view[@class="select-icons"]')
 
     def __init__(self, driver):
         BasePage.__init__(self, driver)
@@ -69,6 +69,10 @@ class CartPage(BasePage):
         return self.find_element(self._cart_total_num)
 
     # 商品数量输入框
+    def get_product_num_input_box_i(self, i):
+        _product_num_input_i = (By.XPATH, '//uni-view[@class="cart-item"][position()=' + str(i) + ']/*//input[@class="uni-input-input"]')
+        return self.find_element(_product_num_input_i)
+
     def get_product_num_input_box(self):
         return self.find_elements(self._product_num_input)
 
@@ -94,11 +98,16 @@ class CartPage(BasePage):
             results.append(self.get_element_attribute(product_num, "value"))
         return results
 
+    def get_product_num_text_i(self, i):
+        return self.get_element_attribute(self.get_product_num_input_box(i), "value")
+
     '''元素操作层'''
     # 点击第一个商品名称
 
-    def click_product_name_01(self):
-        self.click_element(self._product_name)
+    def click_product_name_i(self, i):
+        _product_name_i = (
+            By.XPATH, '//uni-view[@class="cart-item"][position()=' + str(i) + ']/*//uni-view[@class="pruduct-name overflow-ellipsis-1"]')
+        self.click_element(_product_name_i)
 
     # 点击去逛逛
     def click_goto_anywhere_btn(self):
@@ -121,23 +130,26 @@ class CartPage(BasePage):
         self.click_element(self._cart_edit_delete_btn)
 
     # 点击商品数量+
-    def click_product_num_add(self):
-        self.click_element(self._product_num_add)
+    def click_product_num_add(self, i):
+        _product_num_add_i = (By.XPATH, '//uni-view[@class="cart-item"][position()=' + str(i) + ']/*//uni-view[@class="product-add"]')
+        self.click_element(_product_num_add_i)
 
     # 点击商品数量-
-    def click_product_num_del(self):
-        self.click_element(self._product_num_del)
+    def click_product_num_del(self, i):
+        _product_num_del_i = (By.XPATH, '//uni-view[@class="cart-item"][position()=' + str(i) + ']/*//uni-view[@class="product-del"]')
+        self.click_element(_product_num_del_i)
 
     # 输入商品数量
-    def input_product_num(self, num):
-        BasePage(self.driver).clear_element(self.get_product_num_input_box()[0])
-        self.sendkey_element(self.get_product_num_input_box()[0], num)
+    def input_product_num(self, i, num):
+        BasePage(self.driver).clear_element(self.get_product_num_input_box_i(i))
+        self.sendkey_element(self.get_product_num_input_box_i(i), num)
 
     def click_del_popup_sure_btn(self):
         self.click_element(self._del_popup_sure_btn)
 
-    def click_product_select_icon(self):
-        self.click_element(self._product_select_icon)
+    def click_product_select_icon_i(self, i):
+        _product_select_icon_i = (By.XPATH, '//uni-view[@class="cart-item"][position()=' + str(i) + ']/*//uni-view[@class="select-icons"]')
+        self.click_element(_product_select_icon_i)
     # 点击结算按钮
 
     def click_create_order_btn(self):

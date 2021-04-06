@@ -39,6 +39,7 @@ class SearchPage(BasePage):
     def send_key_search_box(self, value=' '):
         self.sendkey_element(self.get_search_box(), value)
         self.sendkey_element(self.get_search_box(), Keys.RETURN)
+        self.sendkey_element(self.get_search_box(), Keys.RETURN)
 
     # 点击取消按钮
     def click_cancel_button(self):

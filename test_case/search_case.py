@@ -7,7 +7,6 @@ from pages.search_page import SearchPage
 from selenium.webdriver.support import expected_conditions as ec
 from selenium import webdriver
 from time import sleep
-
 import os
 
 
