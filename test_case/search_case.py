@@ -1,6 +1,6 @@
 # coding=utf-8
 import unittest
-from ddt import *
+from ddt import data, ddt
 from public.BasePage import BasePage
 from pages.home_page import HomePage
 from pages.search_page import SearchPage
